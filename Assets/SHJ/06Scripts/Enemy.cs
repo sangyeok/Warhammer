@@ -6,11 +6,10 @@ using UnityEngine;
 using UnityEngine.AI;
 
 // 적 구현 기능
-// 1. Idle 및 이동
+// 1. 기본 Idle 
 // 2. 플레이어 발견 시 이동
 // 3. 플레이어에 가까이 다가가면 공격 후 5초 딜레이
-// 4-1. 플레이어 한번 공격 시 날아감
-// 4-2.
+// 4. 플레이어가 공격하면 Damage
 
 public class Enemy : MonoBehaviour
 {
@@ -68,9 +67,9 @@ public class Enemy : MonoBehaviour
     }
 
     float currentTime = 0;
-    float moveRange = 7;
+    public float moveRange = 10;
 
-    // 거리가 가까워지면 
+    // Idle 상태로 있다가 플레이어와의 거리가 가까워지면 이동으로 전환
     private void Idle()
     {
         float distance = Vector3.Distance(Target.position, transform.position);
@@ -78,12 +77,13 @@ public class Enemy : MonoBehaviour
         {
             agent.enabled = true;
             m_State = EnemyState.Move;
+            //anim.SetFloat("setMoveF",distance);
             anim.SetTrigger("setMove");
         }
-
     }
 
-    float attackRange = 1.5f;
+    public float attackRange = 1.5f;
+    // 타겟 방향으로 이동. 공격범위 안에 들어오면 공격으로 전환
     private void Move()
     {
         Vector3 dir = Target.position - transform.position;
@@ -94,6 +94,7 @@ public class Enemy : MonoBehaviour
         {
             agent.enabled = false;
             m_State = EnemyState.Attack;
+            currentTime = attackDelaytime;
             anim.SetTrigger("setAttack");
         }
         if (distance > moveRange)
@@ -104,8 +105,9 @@ public class Enemy : MonoBehaviour
         }
 
     }
-    float attackDelaytime =5;
 
+    public float attackDelaytime =5;
+    // 일정시간에 한번씩 공격하기
     private void Attack()
     {
         Vector3 dir = Target.position - transform.position;
@@ -119,15 +121,17 @@ public class Enemy : MonoBehaviour
         }
 
         float distance = Vector3.Distance(Target.transform.position, transform.position);
+        // 공격범위를 벗어나면 이동으로 전환
         if (distance > attackRange)
         {
             m_State = EnemyState.Move;
             agent.enabled = true;
+            //anim.SetFloat("setMoveF", distance);
             anim.SetTrigger("setMove");
         }
     }
 
-    // 언데드는 1, 살덩이는 5
+    // 언데드는 HP 1
     public int HP = 1;
     public void onDamageProcess()
     {
@@ -156,6 +160,7 @@ public class Enemy : MonoBehaviour
 
     public float damageDelayTime = 2;
 
+    // 일정시간 후 Idle 상태로 전환
     private IEnumerator Damage()
     {
         yield return new WaitForSeconds(damageDelayTime);
