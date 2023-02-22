@@ -82,7 +82,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public float attackRange = 1.5f;
+    public float attackRange = 2f;
     // 타겟 방향으로 이동. 공격범위 안에 들어오면 공격으로 전환
     private void Move()
     {
@@ -132,6 +132,8 @@ public class Enemy : MonoBehaviour
     }
 
     // 언데드는 HP 1
+    // 트롤은 HP 2
+    // 웨어울프는 HP 3
     public int HP = 1;
     public void onDamageProcess()
     {
