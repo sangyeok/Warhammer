@@ -77,7 +77,6 @@ public class Enemy_Mid : MonoBehaviour
         {
             agent.enabled = true;
             m_State = EnemyState.Move;
-            //anim.SetFloat("setMoveF",distance);
             anim.SetTrigger("setMove");
         }
     }
@@ -135,14 +134,12 @@ public class Enemy_Mid : MonoBehaviour
         {
             m_State = EnemyState.Move;
             agent.enabled = true;
-            //anim.SetFloat("setMoveF", distance);
             anim.SetTrigger("setMove");
         }
     }
 
     // 언데드는 HP 1
-    // 트롤은 HP 2
-    // 웨어울프는 HP 3
+    // 트롤은 HP 3
     public int HP = 3;
     public void onDamageProcess()
     {

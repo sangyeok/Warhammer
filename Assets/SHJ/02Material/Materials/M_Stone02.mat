@@ -43,7 +43,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BumpScale: 0.2
+    - _BumpScale: 1.5
     - _GlossMapScale: 1
     m_Colors:
     - _Color: {r: 0.4528302, g: 0.403628, b: 0.3481666, a: 1}
