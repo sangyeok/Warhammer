@@ -148,15 +148,14 @@ public class Enemy : MonoBehaviour
         if(HP > 0)
         {
             m_State = EnemyState.Damage;
-            // Damage 애니메이션
+            anim.SetTrigger("Damage");
             StartCoroutine(Damage());
         }
         else
         {
             m_State= EnemyState.Die;
-            // Die 애니메이션
+            anim.SetTrigger("Die");
             cc.enabled= false;
-            StartCoroutine(Die());
         }
     }
 
@@ -167,12 +166,6 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(damageDelayTime);
         m_State= EnemyState.Idle;
-    }
-
-    private IEnumerator Die()
-    {
-        yield return new WaitForSeconds(5);
-        Destroy(gameObject);
     }
 
 }
