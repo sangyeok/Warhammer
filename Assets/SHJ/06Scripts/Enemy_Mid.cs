@@ -63,7 +63,7 @@ public class Enemy_Mid : MonoBehaviour
                 break;
         }
 
-        print(m_State);
+        //print(m_State);
     }
 
     float currentTime = 0;
@@ -138,40 +138,40 @@ public class Enemy_Mid : MonoBehaviour
         }
     }
 
-    // 언데드는 HP 1
-    // 트롤은 HP 3
-    public int HP = 3;
-    public void onDamageProcess()
-    {
-        if(m_State== EnemyState.Die) 
-        {
-            return;
-        }
-        StopAllCoroutines();
-        agent.enabled = false;
-        currentTime= 0;
-        HP--;
-        if(HP > 0)
-        {
-            m_State = EnemyState.Damage;
-            anim.SetTrigger("Damage");
-            StartCoroutine(Damage());
-        }
-        else
-        {
-            m_State= EnemyState.Die;
-            anim.SetTrigger("Die");
-            cc.enabled= false;
-        }
-    }
+    //// 언데드는 HP 1
+    //// 트롤은 HP 3
+    //public int HP = 3;
+    //public void onDamageProcess()
+    //{
+    //    if(m_State== EnemyState.Die) 
+    //    {
+    //        return;
+    //    }
+    //    StopAllCoroutines();
+    //    agent.enabled = false;
+    //    currentTime= 0;
+    //    HP--;
+    //    if(HP > 0)
+    //    {
+    //        m_State = EnemyState.Damage;
+    //        anim.SetTrigger("Damage");
+    //        StartCoroutine(Damage());
+    //    }
+    //    else
+    //    {
+    //        m_State= EnemyState.Die;
+    //        anim.SetTrigger("Die");
+    //        cc.enabled= false;
+    //    }
+    //}
 
-    public float damageDelayTime = 2;
+    //public float damageDelayTime = 2;
 
-    // 일정시간 후 Idle 상태로 전환
-    private IEnumerator Damage()
-    {
-        yield return new WaitForSeconds(damageDelayTime);
-        m_State= EnemyState.Idle;
-    }
+    //// 일정시간 후 Idle 상태로 전환
+    //private IEnumerator Damage()
+    //{
+    //    yield return new WaitForSeconds(damageDelayTime);
+    //    m_State= EnemyState.Idle;
+    //}
 
 }

@@ -65,7 +65,7 @@ public class Enemy_Boss : MonoBehaviour
                 break;
         }
 
-        print(m_State);
+        //print(m_State);
     }
 
     float currentTime = 0;
