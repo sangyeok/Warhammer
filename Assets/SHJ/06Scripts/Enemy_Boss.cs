@@ -20,8 +20,11 @@ public class Enemy_Boss : MonoBehaviour
     CharacterController cc = null;
     Animator anim;
 
+    public static Enemy_Boss instance;
+
     public enum EnemyState
     {
+        Appear,
         Idle,
         Move,
         Attack,
@@ -50,6 +53,9 @@ public class Enemy_Boss : MonoBehaviour
         
         switch (m_State)
         {
+            case EnemyState.Appear:
+                Appear();
+                break;
             case EnemyState.Idle:
                 Idle();
                 break; 
@@ -66,6 +72,11 @@ public class Enemy_Boss : MonoBehaviour
         }
 
         //print(m_State);
+    }
+
+    private void Appear()
+    {
+        throw new NotImplementedException();
     }
 
     float currentTime = 0;
@@ -102,7 +113,6 @@ public class Enemy_Boss : MonoBehaviour
         }
     }
 
-    int attackCount = 0;
     public float attackDelaytime =5;
 
     private void Attack()
@@ -142,12 +152,14 @@ public class Enemy_Boss : MonoBehaviour
         }
     }
 
+    bool isAttack = false;
     private void Fire()
     {
 
         // 파이어 공격
         // 손을 내미는 애니메이션
         anim.SetTrigger("Fire");
+        isAttack = true;
         // 파티클 파이어 쏘기
 
         StartCoroutine(Follow());
@@ -158,6 +170,8 @@ public class Enemy_Boss : MonoBehaviour
         // 무기 내밀면서 달려들기
         // 애니메이션
         anim.SetTrigger("Sprint");
+        isAttack = true;
+
         StartCoroutine(Stay());
     }
 
@@ -177,8 +191,13 @@ public class Enemy_Boss : MonoBehaviour
         anim.SetTrigger("setIdle");
     }
 
-
-
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player") && isAttack)
+        {
+            this.GetComponent<EnemyAttackEvent>().OnHit();
+        }
+    }
     // 언데드는 HP 1
     // 트롤은 HP 3
     public int HP = 3;
