@@ -45,6 +45,7 @@ public class Enemy_Boss : MonoBehaviour
         cc = GetComponent<CharacterController>();
         agent= GetComponent<NavMeshAgent>();
         anim= GetComponent<Animator>();
+        m_State = EnemyState.Idle;
 
     }
 
@@ -152,17 +153,23 @@ public class Enemy_Boss : MonoBehaviour
         }
     }
 
-    bool isAttack = false;
+    bool isSprint = false;
     private void Fire()
     {
-
         // 파이어 공격
         // 손을 내미는 애니메이션
         anim.SetTrigger("Fire");
-        isAttack = true;
-        // 파티클 파이어 쏘기
-
         StartCoroutine(Follow());
+    }
+
+    public GameObject fire;
+    public GameObject firePos;
+
+    void OnFire()
+    {
+        fire = Instantiate(firePos);
+        fire.transform.position = firePos.transform.position;
+        fire.transform.forward = firePos.transform.forward;
     }
 
     private void Sprint()
@@ -170,7 +177,7 @@ public class Enemy_Boss : MonoBehaviour
         // 무기 내밀면서 달려들기
         // 애니메이션
         anim.SetTrigger("Sprint");
-        isAttack = true;
+        isSprint = true;
 
         StartCoroutine(Stay());
     }
@@ -191,15 +198,17 @@ public class Enemy_Boss : MonoBehaviour
         anim.SetTrigger("setIdle");
     }
 
+    // sprint 상태에서 충돌하면 player HP 감소
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Player") && isAttack)
+        if (other.gameObject.CompareTag("Player") && isSprint)
         {
             this.GetComponent<EnemyAttackEvent>().OnHit();
         }
     }
     // 언데드는 HP 1
     // 트롤은 HP 3
+    // 보스는 HP 10
     public int HP = 3;
     public void onDamageProcess()
     {
