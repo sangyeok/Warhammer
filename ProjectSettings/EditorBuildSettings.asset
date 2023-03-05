@@ -4,5 +4,17 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/SHJ/01Scene/Intro.unity
+    guid: 9e5cd55bde4e1034fafa4b333ef3b5eb
+  - enabled: 1
+    path: Assets/SHJ/01Scene/Main.unity
+    guid: 95221902b4289344e81d432de2984955
+  - enabled: 1
+    path: Assets/SHJ/01Scene/Charactor.unity
+    guid: 1203a3824f2b46647967b0a2f6e49a4a
+  - enabled: 1
+    path: Assets/SHJ/01Scene/Prologue.unity
+    guid: 4bcf201c253dacd4399aad556808f26c
   m_configObjects: {}

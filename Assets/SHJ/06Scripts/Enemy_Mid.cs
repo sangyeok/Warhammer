@@ -33,27 +33,27 @@ public class Enemy_Mid : MonoBehaviour
     void Start()
     {
         GameObject player = GameObject.Find("Player");
-        if(player != null)
+        if (player != null)
         {
-            Target= player.transform;
+            Target = player.transform;
         }
         cc = GetComponent<CharacterController>();
-        agent= GetComponent<NavMeshAgent>();
-        anim= GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
 
     }
 
     void Update()
     {
-        
+
         switch (m_State)
         {
             case EnemyState.Idle:
                 Idle();
-                break; 
+                break;
             case EnemyState.Move:
                 Move();
-                break; 
+                break;
             case EnemyState.Attack:
                 Attack();
                 break;
@@ -88,8 +88,8 @@ public class Enemy_Mid : MonoBehaviour
         Vector3 dir = Target.position - transform.position;
         float distance = dir.magnitude;
         agent.destination = Target.position;
-        
-        if(distance < attackRange)
+
+        if (distance < attackRange)
         {
             agent.enabled = false;
             m_State = EnemyState.Attack;
@@ -104,7 +104,7 @@ public class Enemy_Mid : MonoBehaviour
 
     }
     int attackCount = 0;
-    public float attackDelaytime =5;
+    public float attackDelaytime = 5;
     // 일정시간에 한번씩 공격하기
     private void Attack()
     {
@@ -116,7 +116,7 @@ public class Enemy_Mid : MonoBehaviour
         {
             currentTime = 0;
             attackCount++;
-            if(attackCount< 2)
+            if (attackCount < 2)
             {
                 anim.SetTrigger("setAttack");
             }
@@ -125,7 +125,7 @@ public class Enemy_Mid : MonoBehaviour
                 anim.SetTrigger("setJump");
                 attackCount = 0;
             }
-            
+
         }
 
         float distance = Vector3.Distance(Target.transform.position, transform.position);
