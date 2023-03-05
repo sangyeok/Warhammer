@@ -91,7 +91,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0
-        functionName: 
+        functionName: OnHit
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

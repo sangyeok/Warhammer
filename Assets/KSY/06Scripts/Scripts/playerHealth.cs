@@ -17,7 +17,7 @@ public class playerHealth : MonoBehaviour
         }
         set 
         {
-            StartCoroutine(UI());
+            //StartCoroutine(UI());
             hp = value;
             if (hp <= 0)
             {
@@ -38,10 +38,10 @@ public class playerHealth : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        hpbar.enabled = false;
+       // hpbar.enabled = false;
     }
 
-    public Image hpbar;
+    //public Image hpbar;
     /*public int GetHp()
     {
         return hp;
@@ -56,11 +56,11 @@ public class playerHealth : MonoBehaviour
             Destroy(gameObject);
         }
     }*/
-    private IEnumerator UI()
-    {
-        hpbar.enabled = true;
-        yield return new WaitForSeconds(0.3f);
-        hpbar.enabled = false;
-    }
+    //private IEnumerator UI()
+    //{
+    //    hpbar.enabled = true;
+    //    yield return new WaitForSeconds(0.3f);
+    //    hpbar.enabled = false;
+    //}
 
 }

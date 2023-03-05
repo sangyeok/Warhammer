@@ -32,7 +32,7 @@ public class Enemy_Boss : MonoBehaviour
         Die
     };
 
-    public EnemyState m_State;
+    public EnemyState m_State = EnemyState.Appear;
     NavMeshAgent agent;
 
     void Start()
@@ -51,7 +51,8 @@ public class Enemy_Boss : MonoBehaviour
 
     void Update()
     {
-        
+
+
         switch (m_State)
         {
             case EnemyState.Appear:
@@ -72,12 +73,16 @@ public class Enemy_Boss : MonoBehaviour
                 break;
         }
 
-        //print(m_State);
+        print(m_State);
     }
 
     private void Appear()
     {
-        throw new NotImplementedException();
+        Collider[] colls = Physics.OverlapSphere(transform.position, 100.0f);
+        if (colls[0].CompareTag("Player"))
+        {
+            m_State = EnemyState.Idle;
+        }
     }
 
     float currentTime = 0;
