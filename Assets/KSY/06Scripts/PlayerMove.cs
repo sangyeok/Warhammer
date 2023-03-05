@@ -25,14 +25,14 @@ public class PlayerMove : MonoBehaviour
     bool isinAir = false;
     public Transform hitCube;
     public Transform bulletEffect;
-    ParticleSystem psBulletEffect;
+    //ParticleSystem psBulletEffect;
     // Start is called before the first frame update
     void Start()
     {
         cc = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
         anim.speed = 2;
-        psBulletEffect = bulletEffect.GetComponent<ParticleSystem>();
+        //psBulletEffect = bulletEffect.GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -98,8 +98,8 @@ public class PlayerMove : MonoBehaviour
                 CamShakeManager.Instance.Play();
                 bulletEffect.position = hitCube.position;
                 bulletEffect.forward = hitCube.forward;
-                psBulletEffect.Stop();
-                psBulletEffect.Play();
+                //psBulletEffect.Stop();
+                //psBulletEffect.Play();
                 if (enemyHP.HP != 0)
                 {
                     print("min hp");

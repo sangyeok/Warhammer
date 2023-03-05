@@ -53,7 +53,7 @@ public class Main : MonoBehaviour
     public void setPlay()
     {
         // 마을 맵 씬 연결하기
-        //SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("Level");
     }     
     
     public void setPrologue()
