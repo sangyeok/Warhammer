@@ -24,7 +24,7 @@ public class Enemy_Boss : MonoBehaviour
 
     public enum EnemyState
     {
-        Appear,
+        Delay,
         Idle,
         Move,
         Attack,
@@ -32,7 +32,7 @@ public class Enemy_Boss : MonoBehaviour
         Die
     };
 
-    public EnemyState m_State = EnemyState.Appear;
+    public EnemyState m_State;
     NavMeshAgent agent;
 
     void Start()
@@ -45,7 +45,7 @@ public class Enemy_Boss : MonoBehaviour
         cc = GetComponent<CharacterController>();
         agent= GetComponent<NavMeshAgent>();
         anim= GetComponent<Animator>();
-        m_State = EnemyState.Idle;
+        m_State = EnemyState.Delay;
 
     }
 
@@ -55,8 +55,8 @@ public class Enemy_Boss : MonoBehaviour
 
         switch (m_State)
         {
-            case EnemyState.Appear:
-                Appear();
+            case EnemyState.Delay:
+                Delay();
                 break;
             case EnemyState.Idle:
                 Idle();
@@ -73,15 +73,18 @@ public class Enemy_Boss : MonoBehaviour
                 break;
         }
 
-        print(m_State);
+        //print(m_State);
     }
 
-    private void Appear()
+    // 보스존으로 들어오기 전까지는 Delay -> 범위 안에 들어오면 Idle
+    private void Delay()
     {
-        Collider[] colls = Physics.OverlapSphere(transform.position, 100.0f);
-        if (colls[0].CompareTag("Player"))
+        float distance = Vector3.Distance(Target.position, transform.position);
+        if (distance < moveRange)
         {
+            agent.enabled = true;
             m_State = EnemyState.Idle;
+            anim.SetTrigger("setIdle");
         }
     }
 
@@ -91,6 +94,7 @@ public class Enemy_Boss : MonoBehaviour
     // Idle 상태에서 일정시간이 지나면 이동으로 전환
     private void Idle()
     {
+        
         currentTime += Time.deltaTime;
         if(currentTime > 2f)
         {
@@ -132,7 +136,7 @@ public class Enemy_Boss : MonoBehaviour
         float distance = Vector3.Distance(Target.transform.position, transform.position);
 
         // 3f 범위 안에 있으면 공격
-        if (distance < 4f)
+        if (distance < 3f)
         {
             // 펀치
             anim.SetTrigger("Punch");

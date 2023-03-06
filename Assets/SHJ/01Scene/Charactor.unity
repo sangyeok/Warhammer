@@ -1474,9 +1474,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   warriorSet: {fileID: 901997644}
-  warrior3d: {fileID: 0}
+  warrior3d: {fileID: 1682783396269949221}
   wizardSet: {fileID: 1194626197}
-  wizard3d: {fileID: 0}
+  wizard3d: {fileID: 4247752016503193452}
 --- !u!1 &144465978
 GameObject:
   m_ObjectHideFlags: 0
@@ -6232,7 +6232,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 832049582}
         m_TargetAssemblyTypeName: CharactorSelect, Assembly-CSharp
-        m_MethodName: setCharactor
+        m_MethodName: setMain
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9625,7 +9625,7 @@ MonoBehaviour:
   warriorSet: {fileID: 901997644}
   warrior3d: {fileID: 1682783396269949221}
   wizardSet: {fileID: 1194626197}
-  wizard3d: {fileID: 0}
+  wizard3d: {fileID: 4247752016503193452}
 --- !u!1 &1486295487
 GameObject:
   m_ObjectHideFlags: 0

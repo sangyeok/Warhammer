@@ -110,7 +110,7 @@ public class PlayerMove : MonoBehaviour
     }
     void ScreenUI()
     {
-        print("UI");
+        //print("UI");
         //Screen.SetActive(true);
         //float curTime = 0;
         //float durTime = 3;

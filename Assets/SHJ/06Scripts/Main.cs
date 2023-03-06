@@ -17,35 +17,27 @@ public class Main : MonoBehaviour
     public GameObject wizardinfo;
     public GameObject wizard3d;
 
+    public bool isWarrior = false;
+    public bool isWizard = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
-
-        if (CharactorManager.instance.isWarrior == true)
-        {
-            // 메인 씬에서 어떤 캐릭터인지에 따라 캐릭터 설명 활성화
-            warriorinfo.SetActive(true);
-            warrior3d.SetActive(true);
-            wizardinfo.SetActive(false);
-            wizard3d.SetActive(false);
-
-        }
-        else if (CharactorManager.instance.isWizard == true)
-        {
-            warriorinfo.SetActive(false);
-            warrior3d.SetActive(false);
-            wizardinfo.SetActive(true);
-            wizard3d.SetActive(true);
-        }
+        isWarrior = true;
+        warriorinfo.SetActive(true);
+        warrior3d.SetActive(true);
+        wizardinfo.SetActive(false);
+        wizard3d.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        print("isWarrior:" + CharactorManager.instance.isWarrior);
-        print("isWizard:" + CharactorManager.instance.isWizard);
+
     }
-    public void charactorSelect()
+
+    public void setCharactor()
     {
         SceneManager.LoadScene("Charactor");
     }
