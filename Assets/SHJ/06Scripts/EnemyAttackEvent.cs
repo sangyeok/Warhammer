@@ -10,6 +10,7 @@ public class EnemyAttackEvent : MonoBehaviour
     // 3. fire particle에 충돌
     public void OnHit()
     {
+       
         print("적이 공격함");
         playerHealth.Instance.HP--;
     }

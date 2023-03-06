@@ -22,6 +22,8 @@ public class Enemy_Boss : MonoBehaviour
 
     public static Enemy_Boss instance;
 
+    public GameObject wall;
+
     public enum EnemyState
     {
         Delay,
@@ -89,12 +91,13 @@ public class Enemy_Boss : MonoBehaviour
     }
 
     float currentTime = 0;
-    public float moveRange = 10;
+    public float moveRange = 100;
 
     // Idle 상태에서 일정시간이 지나면 이동으로 전환
     private void Idle()
     {
-        
+        wall.SetActive(true);
+        wall.GetComponent<BoxCollider>().enabled = true;
         currentTime += Time.deltaTime;
         if(currentTime > 2f)
         {
@@ -171,12 +174,13 @@ public class Enemy_Boss : MonoBehaviour
         StartCoroutine(Follow());
     }
 
-    public GameObject fire;
+    public GameObject fireFactory;
     public GameObject firePos;
 
     void OnFire()
     {
-        fire = Instantiate(firePos);
+        print("Fire");
+        GameObject fire = Instantiate(fireFactory);
         fire.transform.position = firePos.transform.position;
         fire.transform.forward = firePos.transform.forward;
     }

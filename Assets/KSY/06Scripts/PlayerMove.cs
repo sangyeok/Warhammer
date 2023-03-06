@@ -2,7 +2,6 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,6 +43,7 @@ public class PlayerMove : MonoBehaviour
         }
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
+
         Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
         moveDir.Normalize();
         anim.SetFloat("Speed", v);
@@ -87,17 +87,15 @@ public class PlayerMove : MonoBehaviour
     void OnHit()
     {
         Collider[] cols = Physics.OverlapBox(hitCube.position, hitCube.localScale * 0.5f);
-        print("attack");
         for (int i = 0; i < cols.Length; i++)
         {
             var enemyHP = cols[i].GetComponentInChildren<enemyHealth>();
             if (enemyHP)
             {
-                ScreenUI();
-                print("111111111");
+                //ScreenUI();
                 CamShakeManager.Instance.Play();
-                bulletEffect.position = hitCube.position;
-                bulletEffect.forward = hitCube.forward;
+                //bulletEffect.position = hitCube.position;
+                //bulletEffect.forward = hitCube.forward;
                 //psBulletEffect.Stop();
                 //psBulletEffect.Play();
                 if (enemyHP.HP != 0)
@@ -108,17 +106,20 @@ public class PlayerMove : MonoBehaviour
             }
         }
     }
-    void ScreenUI()
-    {
-        //print("UI");
-        //Screen.SetActive(true);
-        //float curTime = 0;
-        //float durTime = 3;
-        //curTime += Time.time;
-        //if(curTime> durTime)
-        //{
-        //    curTime = 0;
-        //    Screen.SetActive(false);
-        //}
-    }
+
+
+
+    //void ScreenUI()
+    //{
+    //    //print("UI");
+    //    //Screen.SetActive(true);
+    //    //float curTime = 0;
+    //    //float durTime = 3;
+    //    //curTime += Time.time;
+    //    //if(curTime> durTime)
+    //    //{
+    //    //    curTime = 0;
+    //    //    Screen.SetActive(false);
+    //    //}
+    //}
 }
