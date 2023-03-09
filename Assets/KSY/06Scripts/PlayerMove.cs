@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,14 +17,14 @@ public class PlayerMove : MonoBehaviour
 {
     public float speed = 5f;
     public float gravity = -20f;
-    float yVelocity = 0;
+    public float yVelocity = 0;
     public float jumpPower = 10f;
     CharacterController cc;
     Animator anim;
     public Transform body;
     bool isinAir = false;
     public Transform hitCube;
-    public Transform bulletEffect;
+    //public Transform bulletEffect;
     //ParticleSystem psBulletEffect;
     // Start is called before the first frame update
     void Start()
@@ -34,15 +35,27 @@ public class PlayerMove : MonoBehaviour
         //psBulletEffect = bulletEffect.GetComponent<ParticleSystem>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (GameManager.instance.IsIntro())
         {
             return;
         }
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        // 등가속도 v = vo + at
+        // transform.position += dir * speed * Time.deltaTime;
+        
+        yVelocity += gravity * Time.deltaTime;
+        // 수직항력을 적용시켜줘야 한다.
+        // 바닥에 있을 때는 수직속도를 0으로 해줘야 한다.
+        // above, side, below
+        //if (cc.isGrounded)
+        //if (((int)cc.collisionFlags & (1 << (int)CollisionFlags.Below)) != 0)
+        if (cc.collisionFlags  == CollisionFlags.Below)
+        {
+            print("asd");
+            yVelocity = 0;
+            isinAir = false;
+        }
 
         Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
         moveDir.Normalize();
@@ -55,44 +68,57 @@ public class PlayerMove : MonoBehaviour
         moveDir = Camera.main.transform.TransformDirection(moveDir);
         //카메라 방향으로 몸체를 회전시키고 싶다.
 
-        // 등가속도 v = vo + at
-        // transform.position += dir * speed * Time.deltaTime;
-        yVelocity += gravity * Time.deltaTime;
-        // 수직항력을 적용시켜줘야 한다.
-        // 바닥에 있을 때는 수직속도를 0으로 해줘야 한다.
-        // above, side, below
-        // if(cc.isGrounded)
-        if (cc.collisionFlags == CollisionFlags.Below)
-        {
-            yVelocity = 0;
-            isinAir = false;
-        }
-        if (isinAir == false && Input.GetButtonDown("Jump"))
-        {
-            yVelocity = jumpPower;
-            isinAir = true;
-        }
+
         moveDir.y = yVelocity;
         cc.Move(moveDir * speed * Time.deltaTime);
+        //if (Screen)
+        //{
+        //    Color c = Screen.color;
+        //}
+    }
+    float h, v;
+    // Update is called once per frame
+    void Update()
+    {
+        if (GameManager.instance.IsIntro())
+        {
+            return;
+        }
+
+
+        //if (((cc.collisionFlags & CollisionFlags.CollidedBelow) != 0) && Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
+        {
+            print("cc.collisionFlags : " + cc.collisionFlags);
+            //if (cc.collisionFlags == CollisionFlags.CollidedBelow)
+            if ((cc.collisionFlags & CollisionFlags.CollidedBelow) != 0)
+            {
+                yVelocity = jumpPower;
+                isinAir = true;
+            }
+
+        }
+
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxis("Vertical");
+
         if (Input.GetMouseButtonDown(0))
         {
             anim.SetTrigger("onweapon");
         }
-        if(Screen)
-        {
-            Color c = Screen.color;
-        }
     }
-    public Image Screen;
+    //public Image Screen;
     void OnHit()
     {
         Collider[] cols = Physics.OverlapBox(hitCube.position, hitCube.localScale * 0.5f);
+        print("attack");
         for (int i = 0; i < cols.Length; i++)
         {
             var enemyHP = cols[i].GetComponentInChildren<enemyHealth>();
             if (enemyHP)
             {
                 //ScreenUI();
+                print("111111111");
                 CamShakeManager.Instance.Play();
                 //bulletEffect.position = hitCube.position;
                 //bulletEffect.forward = hitCube.forward;
@@ -106,12 +132,9 @@ public class PlayerMove : MonoBehaviour
             }
         }
     }
-
-
-
     //void ScreenUI()
     //{
-    //    //print("UI");
+    //    print("UI");
     //    //Screen.SetActive(true);
     //    //float curTime = 0;
     //    //float durTime = 3;

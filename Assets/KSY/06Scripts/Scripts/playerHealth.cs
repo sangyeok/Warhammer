@@ -6,11 +6,12 @@ using UnityEngine.UI;
 
 public class playerHealth : MonoBehaviour
 {
-    public static int hp = 3;
+    public static int hp = 10;
     public static playerHealth Instance;
 
     public int HP
-    {
+    { 
+        
         get
         {
             return hp;
@@ -38,7 +39,7 @@ public class playerHealth : MonoBehaviour
         {
             Destroy(gameObject);
         }
-       // hpbar.enabled = false;
+        //hpbar.enabled = false;
     }
 
     //public Image hpbar;
