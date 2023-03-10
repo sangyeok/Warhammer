@@ -58,6 +58,7 @@ public class Enemy_Mid : MonoBehaviour
                 Attack();
                 break;
             case EnemyState.Damage:
+                Damage();
                 break;
             case EnemyState.Die:
                 break;
@@ -106,6 +107,9 @@ public class Enemy_Mid : MonoBehaviour
     int attackCount = 0;
     public float attackDelaytime = 5;
     // 일정시간에 한번씩 공격하기
+
+    bool isAnim = false; // animation 중단문제 해결용
+
     private void Attack()
     {
         Vector3 dir = Target.position - transform.position;
@@ -118,10 +122,15 @@ public class Enemy_Mid : MonoBehaviour
             attackCount++;
             if (attackCount < 2)
             {
+                isAnim = true;
+                agent.enabled = false;
                 anim.SetTrigger("setAttack");
+                StartCoroutine("PlayerTrack");
             }
             else
             {
+                isAnim = true;
+                agent.enabled = false;
                 anim.SetTrigger("setJump");
                 attackCount = 0;
             }
@@ -130,12 +139,35 @@ public class Enemy_Mid : MonoBehaviour
 
         float distance = Vector3.Distance(Target.transform.position, transform.position);
         // 공격범위를 벗어나면 이동으로 전환
-        if (distance > attackRange)
+        if (distance > attackRange && isAnim == false)
         {
             m_State = EnemyState.Move;
             agent.enabled = true;
             anim.SetTrigger("setMove");
         }
+    }
+
+    private IEnumerator PlayerTrack()
+    {
+        yield return new WaitForSeconds(2f);
+        agent.enabled = true;
+        isAnim = false;
+    }
+
+    private void Damage()
+    {
+        agent.isStopped = true;
+        anim.SetTrigger("Damage");
+        StartCoroutine(OnDamage());
+    }
+
+    public float damageDelayTime = 2;
+
+    // 일정시간 후 Idle 상태로 전환
+    private IEnumerator OnDamage()
+    {
+        yield return new WaitForSeconds(damageDelayTime);
+        m_State = EnemyState.Idle;
     }
 
     //// 언데드는 HP 1
@@ -165,13 +197,5 @@ public class Enemy_Mid : MonoBehaviour
     //    }
     //}
 
-    //public float damageDelayTime = 2;
-
-    //// 일정시간 후 Idle 상태로 전환
-    //private IEnumerator Damage()
-    //{
-    //    yield return new WaitForSeconds(damageDelayTime);
-    //    m_State= EnemyState.Idle;
-    //}
 
 }

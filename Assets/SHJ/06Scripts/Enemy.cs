@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
         Attack,
         Damage,
         Die
-    };
+    }
 
     public EnemyState m_State;
     NavMeshAgent agent;
@@ -58,6 +58,7 @@ public class Enemy : MonoBehaviour
                 Attack();
                 break;
             case EnemyState.Damage:
+                //Damage();
                 break;
             case EnemyState.Die:
                 break;
@@ -91,10 +92,12 @@ public class Enemy : MonoBehaviour
 
         if (distance < attackRange)
         {
+
             agent.enabled = false;
             m_State = EnemyState.Attack;
             currentTime = attackDelaytime;
             anim.SetTrigger("setAttack");
+
         }
         if (distance > moveRange)
         {
@@ -105,6 +108,7 @@ public class Enemy : MonoBehaviour
 
     }
 
+    bool isAnim = false; // animation 중단문제 해결용
     public float attackDelaytime = 5;
     // 일정시간에 한번씩 공격하기
     private void Attack()
@@ -115,18 +119,42 @@ public class Enemy : MonoBehaviour
         currentTime += Time.deltaTime;
         if (currentTime > attackDelaytime)
         {
+            isAnim = true;
             currentTime = 0;
             anim.SetTrigger("setAttack");
+            StartCoroutine(AnimFin());
         }
 
         float distance = Vector3.Distance(Target.transform.position, transform.position);
         // 공격범위를 벗어나면 이동으로 전환
-        if (distance > attackRange)
+        if (distance > attackRange && isAnim == false)
         {
             m_State = EnemyState.Move;
             agent.enabled = true;
             anim.SetTrigger("setMove");
         }
+    }
+
+    private void Damage()
+    {
+        agent.enabled = false;
+        anim.SetTrigger("Damage");
+        StartCoroutine(OnDamage());
+    }
+
+    public float damageDelayTime = 2;
+
+    // 일정시간 후 Idle 상태로 전환
+    private IEnumerator OnDamage()
+    {
+        yield return new WaitForSeconds(damageDelayTime);
+        m_State = EnemyState.Idle;
+    }
+
+    private IEnumerator AnimFin()
+    {
+        yield return new WaitForSeconds(2f);
+        isAnim = false;
     }
 
     //// 언데드는 HP 1
@@ -156,13 +184,5 @@ public class Enemy : MonoBehaviour
     //    }
     //}
 
-    //public float damageDelayTime = 2;
-
-    //// 일정시간 후 Idle 상태로 전환
-    //private IEnumerator Damage()
-    //{
-    //    yield return new WaitForSeconds(damageDelayTime);
-    //    m_State= EnemyState.Idle;
-    //}
 
 }

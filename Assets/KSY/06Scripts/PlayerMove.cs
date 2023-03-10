@@ -52,7 +52,7 @@ public class PlayerMove : MonoBehaviour
         //if (((int)cc.collisionFlags & (1 << (int)CollisionFlags.Below)) != 0)
         if (cc.collisionFlags  == CollisionFlags.Below)
         {
-            print("asd");
+            //print("asd");
             yVelocity = 0;
             isinAir = false;
         }

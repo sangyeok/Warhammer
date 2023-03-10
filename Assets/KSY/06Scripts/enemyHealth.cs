@@ -6,8 +6,18 @@ using UnityEngine.UI;
 
 public class enemyHealth : MonoBehaviour
 {
+    Enemy enemy;
+    Animator anim;
+    CharacterController cc;
+
     public int hp = 3;
     
+    private void Start()
+    {
+        enemy = GetComponent<Enemy>();
+        anim = GetComponent<Animator>();
+        cc = GetComponent<CharacterController>();
+    }
     public int HP
     {
         get
@@ -17,12 +27,15 @@ public class enemyHealth : MonoBehaviour
         set 
         {
             hp = value;
+            enemy.m_State = Enemy.EnemyState.Damage;
             if (hp <= 0)
             {
-                Destroy(gameObject);
+                anim.SetTrigger("Die");
+                cc.enabled= false;
             }
         }
     }
+
     /*private void Awake()
     {
         if(!Instance)
