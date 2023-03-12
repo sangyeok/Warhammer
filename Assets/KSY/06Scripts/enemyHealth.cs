@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class enemyHealth : MonoBehaviour
 {
-    Enemy enemy;
     Animator anim;
     CharacterController cc;
 
@@ -14,8 +13,6 @@ public class enemyHealth : MonoBehaviour
     
     private void Start()
     {
-        enemy = GetComponent<Enemy>();
-        anim = GetComponent<Animator>();
         cc = GetComponent<CharacterController>();
     }
     public int HP
@@ -27,7 +24,7 @@ public class enemyHealth : MonoBehaviour
         set 
         {
             hp = value;
-            enemy.m_State = Enemy.EnemyState.Damage;
+            print("enemy: " + hp);  
             if (hp <= 0)
             {
                 anim.SetTrigger("Die");

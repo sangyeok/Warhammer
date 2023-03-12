@@ -30,8 +30,7 @@ public class Enemy_Boss : MonoBehaviour
         Idle,
         Move,
         Attack,
-        Damage,
-        Die
+        Damage
     };
 
     public EnemyState m_State;
@@ -40,13 +39,13 @@ public class Enemy_Boss : MonoBehaviour
     void Start()
     {
         GameObject player = GameObject.Find("Player");
-        if(player != null)
+        if (player != null)
         {
-            Target= player.transform;
+            Target = player.transform;
         }
         cc = GetComponent<CharacterController>();
-        agent= GetComponent<NavMeshAgent>();
-        anim= GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
         m_State = EnemyState.Delay;
 
     }
@@ -62,16 +61,14 @@ public class Enemy_Boss : MonoBehaviour
                 break;
             case EnemyState.Idle:
                 Idle();
-                break; 
+                break;
             case EnemyState.Move:
                 Move();
-                break; 
+                break;
             case EnemyState.Attack:
                 Attack();
                 break;
             case EnemyState.Damage:
-                break;
-            case EnemyState.Die:
                 break;
         }
 
@@ -91,17 +88,17 @@ public class Enemy_Boss : MonoBehaviour
     }
 
     float currentTime = 0;
-    public float moveRange = 100;
+    public float moveRange = 50;
 
     // Idle 상태에서 일정시간이 지나면 이동으로 전환
     private void Idle()
     {
         wall.SetActive(true);
-        wall.GetComponent<BoxCollider>().enabled = true;
+        //wall.GetComponent<BoxCollider>().enabled = true;
         currentTime += Time.deltaTime;
-        if(currentTime > 2f)
+        if (currentTime > 2f)
         {
-            currentTime= 0;
+            currentTime = 0;
             m_State = EnemyState.Move;
             anim.SetTrigger("setMove");
 
@@ -116,17 +113,19 @@ public class Enemy_Boss : MonoBehaviour
         Vector3 dir = Target.position - transform.position;
         float distance = dir.magnitude;
         agent.destination = Target.position;
-        currentTime+= Time.deltaTime;
+        currentTime += Time.deltaTime;
         // 이동하다 일정시간 후에 공격으로 전환
-        if(currentTime > 5f)
+        if (currentTime > 5f)
         {
             agent.enabled = false;
             m_State = EnemyState.Attack;
-            currentTime= 0;
+            currentTime = 0;
         }
     }
 
-    public float attackDelaytime =5;
+    public float attackDelaytime = 5;
+
+    bool isAnim = false; // animation 중단문제 해결용
 
     private void Attack()
     {
@@ -134,7 +133,7 @@ public class Enemy_Boss : MonoBehaviour
         dir.y = 0;
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime);
         // 3가지 공격 패턴
-        int percent = Random.Range(0,5);
+        int percent = Random.Range(0, 5);
 
         float distance = Vector3.Distance(Target.transform.position, transform.position);
 
@@ -142,10 +141,11 @@ public class Enemy_Boss : MonoBehaviour
         if (distance < 3f)
         {
             // 펀치
+            isAnim = true;
             anim.SetTrigger("Punch");
-            StartCoroutine(Follow());
+            StartCoroutine("PlayerTrack");
         }
-        else if( percent <= 2 && distance > 3f)
+        else if (percent <= 2 && distance > 3f)
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime);
             Fire();
@@ -157,7 +157,7 @@ public class Enemy_Boss : MonoBehaviour
         }
 
         // 공격범위를 벗어나면 이동으로 전환
-        if (distance > attackRange)
+        if (distance > attackRange && isAnim == false)
         {
             m_State = EnemyState.Move;
             agent.enabled = true;
@@ -170,8 +170,9 @@ public class Enemy_Boss : MonoBehaviour
     {
         // 파이어 공격
         // 손을 내미는 애니메이션
+        isAnim = true;
         anim.SetTrigger("Fire");
-        StartCoroutine(Follow());
+        StartCoroutine("PlayerTrack");
     }
 
     public GameObject fireFactory;
@@ -189,18 +190,19 @@ public class Enemy_Boss : MonoBehaviour
     {
         // 무기 내밀면서 달려들기
         // 애니메이션
+        isAnim = true;
         anim.SetTrigger("Sprint");
         isSprint = true;
-
         StartCoroutine(Stay());
     }
 
-    private IEnumerator Follow()
+    private IEnumerator PlayerTrack()
     {
         // 공격 후 2초 딜레이 후 Move
         yield return new WaitForSeconds(2);
         m_State = EnemyState.Move;
         agent.enabled = true;
+        isAnim = false;
         anim.SetTrigger("setMove");
     }
     private IEnumerator Stay()
@@ -216,44 +218,41 @@ public class Enemy_Boss : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player") && isSprint)
         {
-            this.GetComponent<EnemyAttackEvent>().OnHit();
+            this.GetComponent<EnemyAttackEvent>().OnMyHit();
         }
     }
-    // 언데드는 HP 1
-    // 트롤은 HP 3
+    // 언데드는 HP 2
+    // 트롤은 HP 5
     // 보스는 HP 10
-    public int HP = 3;
-    public void onDamageProcess()
+    public int enemyHp = 10;
+    public void Damage()
     {
-        if(m_State== EnemyState.Die) 
+        if (enemyHp < 0)
         {
+            enemyHp = 0;
             return;
         }
         StopAllCoroutines();
         agent.enabled = false;
-        currentTime= 0;
-        HP--;
-        if(HP > 0)
+        enemyHp--;
+        if (enemyHp > 0)
         {
-            m_State = EnemyState.Damage;
+            
+            print("enemyHp: " + enemyHp);
             anim.SetTrigger("Damage");
-            StartCoroutine(Damage());
+            StartCoroutine(OnDamage());
         }
-        else
+        else if (enemyHp <= 0)
         {
-            m_State= EnemyState.Die;
             anim.SetTrigger("Die");
-            cc.enabled= false;
+            cc.enabled = false;
         }
     }
 
     public float damageDelayTime = 2;
-
-    // 일정시간 후 Idle 상태로 전환
-    private IEnumerator Damage()
+    private IEnumerator OnDamage()
     {
         yield return new WaitForSeconds(damageDelayTime);
-        m_State= EnemyState.Idle;
+        m_State = EnemyState.Idle;
     }
-
 }

@@ -22,7 +22,6 @@ public class PlayerMove : MonoBehaviour
     CharacterController cc;
     Animator anim;
     public Transform body;
-    bool isinAir = false;
     public Transform hitCube;
     //public Transform bulletEffect;
     //ParticleSystem psBulletEffect;
@@ -54,7 +53,6 @@ public class PlayerMove : MonoBehaviour
         {
             //print("asd");
             yVelocity = 0;
-            isinAir = false;
         }
 
         Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
@@ -94,7 +92,6 @@ public class PlayerMove : MonoBehaviour
             if ((cc.collisionFlags & CollisionFlags.CollidedBelow) != 0)
             {
                 yVelocity = jumpPower;
-                isinAir = true;
             }
 
         }
@@ -114,20 +111,34 @@ public class PlayerMove : MonoBehaviour
         print("attack");
         for (int i = 0; i < cols.Length; i++)
         {
-            var enemyHP = cols[i].GetComponentInChildren<enemyHealth>();
-            if (enemyHP)
+            if (cols[i].CompareTag("Undead"))
             {
-                //ScreenUI();
-                print("111111111");
+                var enemy = cols[i].GetComponentInChildren<Enemy>();
                 CamShakeManager.Instance.Play();
-                //bulletEffect.position = hitCube.position;
-                //bulletEffect.forward = hitCube.forward;
-                //psBulletEffect.Stop();
-                //psBulletEffect.Play();
-                if (enemyHP.HP != 0)
+                if (enemy.enemyHp != 0)
                 {
-                    print("min hp");
-                    enemyHP.HP--;
+                    enemy.Damage();
+                    print("enemy min hp");
+                }
+            }
+            else if (cols[i].CompareTag("Troll"))
+            {
+                var enemy = cols[i].GetComponentInChildren<Enemy_Mid>();
+                CamShakeManager.Instance.Play();
+                if (enemy.enemyHp != 0)
+                {
+                    enemy.Damage();
+                    print("enemy min hp");
+                }
+            }
+            else if (cols[i].CompareTag("Boss"))
+            {
+                var enemy = cols[i].GetComponentInChildren<Enemy_Boss>();
+                CamShakeManager.Instance.Play();
+                if (enemy.enemyHp != 0)
+                {
+                    enemy.Damage();
+                    print("enemy min hp");
                 }
             }
         }

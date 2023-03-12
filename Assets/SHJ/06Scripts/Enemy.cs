@@ -23,8 +23,7 @@ public class Enemy : MonoBehaviour
         Idle,
         Move,
         Attack,
-        Damage,
-        Die
+        Damage
     }
 
     public EnemyState m_State;
@@ -40,7 +39,6 @@ public class Enemy : MonoBehaviour
         cc = GetComponent<CharacterController>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-
     }
 
     void Update()
@@ -58,9 +56,7 @@ public class Enemy : MonoBehaviour
                 Attack();
                 break;
             case EnemyState.Damage:
-                //Damage();
-                break;
-            case EnemyState.Die:
+                Damage();
                 break;
         }
 
@@ -82,7 +78,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public float attackRange = 2f;
+    public float attackRange = 4f;
     // 타겟 방향으로 이동. 공격범위 안에 들어오면 공격으로 전환
     private void Move()
     {
@@ -122,7 +118,7 @@ public class Enemy : MonoBehaviour
             isAnim = true;
             currentTime = 0;
             anim.SetTrigger("setAttack");
-            StartCoroutine(AnimFin());
+            StartCoroutine(PlayerTrack());
         }
 
         float distance = Vector3.Distance(Target.transform.position, transform.position);
@@ -135,11 +131,30 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void Damage()
+    public int enemyHp = 2;
+
+    public void Damage()
     {
+        if(enemyHp < 0)
+        {
+            enemyHp = 0;
+            return;
+        }
+        StopAllCoroutines();
         agent.enabled = false;
-        anim.SetTrigger("Damage");
-        StartCoroutine(OnDamage());
+        enemyHp--;
+        if (enemyHp > 0)
+        {
+            print("enemyHp: " + enemyHp);
+            anim.SetTrigger("Damage");
+            StartCoroutine(OnDamage());
+        }
+        else if(enemyHp <= 0) 
+        {
+            anim.SetTrigger("Die");
+            print("enemy dying");
+            cc.enabled = false;
+        }
     }
 
     public float damageDelayTime = 2;
@@ -148,10 +163,11 @@ public class Enemy : MonoBehaviour
     private IEnumerator OnDamage()
     {
         yield return new WaitForSeconds(damageDelayTime);
+        print("enemy OnDamage");
         m_State = EnemyState.Idle;
     }
 
-    private IEnumerator AnimFin()
+    private IEnumerator PlayerTrack()
     {
         yield return new WaitForSeconds(2f);
         isAnim = false;

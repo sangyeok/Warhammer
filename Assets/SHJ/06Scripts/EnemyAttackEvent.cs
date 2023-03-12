@@ -10,7 +10,6 @@ public class EnemyAttackEvent : MonoBehaviour
     // 1. Attack Animation Event
     // 2. Enemy Sprint 상태에서 충돌
     // 3. fire particle에 충돌
-    Transform Target;
 
     private void Start()
     {
@@ -21,7 +20,7 @@ public class EnemyAttackEvent : MonoBehaviour
         //}
     }
 
-    public void OnHit()
+    public void OnMyHit()
     {
         GameObject player = GameObject.Find("Player");
         Vector3 dir = player.transform.position - transform.position;

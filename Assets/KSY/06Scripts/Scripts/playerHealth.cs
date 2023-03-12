@@ -18,12 +18,15 @@ public class playerHealth : MonoBehaviour
         }
         set 
         {
+            
             //StartCoroutine(UI());
             hp = value;
+            print("Player :" + hp);
             if (hp <= 0)
             {
                 Destroy(gameObject);
             }
+
         }
 
     }

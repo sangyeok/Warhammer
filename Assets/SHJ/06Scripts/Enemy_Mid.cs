@@ -24,7 +24,6 @@ public class Enemy_Mid : MonoBehaviour
         Move,
         Attack,
         Damage,
-        Die
     };
 
     public EnemyState m_State;
@@ -60,8 +59,6 @@ public class Enemy_Mid : MonoBehaviour
             case EnemyState.Damage:
                 Damage();
                 break;
-            case EnemyState.Die:
-                break;
         }
 
         //print(m_State);
@@ -82,7 +79,7 @@ public class Enemy_Mid : MonoBehaviour
         }
     }
 
-    public float attackRange = 3f;
+    public float attackRange = 5f;
     // 타겟 방향으로 이동. 공격범위 안에 들어오면 공격으로 전환
     private void Move()
     {
@@ -147,6 +144,7 @@ public class Enemy_Mid : MonoBehaviour
         }
     }
 
+
     private IEnumerator PlayerTrack()
     {
         yield return new WaitForSeconds(2f);
@@ -154,11 +152,29 @@ public class Enemy_Mid : MonoBehaviour
         isAnim = false;
     }
 
-    private void Damage()
+    public int enemyHp = 5;
+    public void Damage()
     {
-        agent.isStopped = true;
-        anim.SetTrigger("Damage");
-        StartCoroutine(OnDamage());
+        if (enemyHp < 0)
+        {
+            enemyHp = 0;
+            return;
+        }
+        StopAllCoroutines();
+        agent.enabled = false;
+        enemyHp--;
+        if (enemyHp > 0)
+        {
+            
+            print("enemyHp: " + enemyHp);
+            anim.SetTrigger("Damage");
+            StartCoroutine(OnDamage());
+        }
+        else if (enemyHp <= 0)
+        {
+            anim.SetTrigger("Die");
+            cc.enabled = false;
+        }
     }
 
     public float damageDelayTime = 2;
