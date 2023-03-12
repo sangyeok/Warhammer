@@ -23,6 +23,7 @@ public class Enemy_Boss : MonoBehaviour
     public static Enemy_Boss instance;
 
     public GameObject wall;
+    
 
     public enum EnemyState
     {
@@ -53,7 +54,6 @@ public class Enemy_Boss : MonoBehaviour
     void Update()
     {
 
-
         switch (m_State)
         {
             case EnemyState.Delay:
@@ -75,9 +75,20 @@ public class Enemy_Boss : MonoBehaviour
         //print(m_State);
     }
 
-    // 보스존으로 들어오기 전까지는 Delay -> 범위 안에 들어오면 Idle
+    // <보스 등장 방식>
+    // 제자리 흔들거리기
+    // 플레이어 감지하면(빛나는 돌 반경안에 들어오면)
+    // 0. 플레이어 카메라 및 움직임 정지
+    // 1. 카메라 전환
+    // 2. 철장 올라감
+    // 3. 보스 특정 지점으로 이동
+    // 4. 카메라도 같이 이동
+    // 5. 보스 으르렁
+    // 6. 플레이어 다시 움직임 및 카메라 켜기
+
     private void Delay()
     {
+
         float distance = Vector3.Distance(Target.position, transform.position);
         if (distance < moveRange)
         {
@@ -255,4 +266,5 @@ public class Enemy_Boss : MonoBehaviour
         yield return new WaitForSeconds(damageDelayTime);
         m_State = EnemyState.Idle;
     }
+
 }
