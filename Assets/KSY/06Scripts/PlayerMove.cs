@@ -29,8 +29,8 @@ public class PlayerMove : MonoBehaviour
     void Start()
     {
         cc = GetComponent<CharacterController>();
-        anim = GetComponentInChildren<Animator>();
-        anim.speed = 2;
+        //anim = GetComponentInChildren<Animator>();
+        //anim.speed = 2;
         //psBulletEffect = bulletEffect.GetComponent<ParticleSystem>();
     }
 
@@ -53,12 +53,13 @@ public class PlayerMove : MonoBehaviour
         {
             //print("asd");
             yVelocity = 0;
+
         }
 
         Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
         moveDir.Normalize();
-        anim.SetFloat("Speed", v);
-        anim.SetFloat("Direction", v * v * h);
+        //anim.SetFloat("Speed", v);
+        //anim.SetFloat("Direction", v * v * h);
 
         Vector3 bodydir = Camera.main.transform.forward;
         bodydir.y = 0;
@@ -99,10 +100,10 @@ public class PlayerMove : MonoBehaviour
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            anim.SetTrigger("onweapon");
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    anim.SetTrigger("onweapon");
+        //}
     }
     //public Image Screen;
     void OnHit()
