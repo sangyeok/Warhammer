@@ -23,7 +23,7 @@ public class Enemy_Boss : MonoBehaviour
     public static Enemy_Boss instance;
 
     public GameObject wall;
-    
+
 
     public enum EnemyState
     {
@@ -108,7 +108,6 @@ public class Enemy_Boss : MonoBehaviour
 
     private void Delay()
     {
-
     }
 
     float currentTime = 0;
@@ -259,7 +258,7 @@ public class Enemy_Boss : MonoBehaviour
         enemyHp--;
         if (enemyHp > 0)
         {
-            
+
             print("enemyHp: " + enemyHp);
             anim.SetTrigger("Damage");
             StartCoroutine(OnDamage());

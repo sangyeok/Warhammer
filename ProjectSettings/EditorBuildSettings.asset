@@ -21,5 +21,5 @@ EditorBuildSettings:
     path: Assets/SHJ/01Scene/Level.unity
     guid: 7736d0e6aaf7a304a97528f8600687fe
   m_configObjects:
-    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 1bcc7688f2b95b044ac264fefa8173d0, type: 2}
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 5d350379e151df440ac3dd3da1612a46, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: b31cf6d80c39bad4ca56d1a07b6a3c52, type: 2}

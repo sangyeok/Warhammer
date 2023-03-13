@@ -7,7 +7,8 @@ public class ObeliskFindPlayer : MonoBehaviour
     //public OVRCameraRig cameraRig;
     public new GameObject camera;
     public GameObject cage;
-    public GameObject enemy;
+    public GameObject enemyBoss;
+    public GameObject particle;
 
     bool isTouch = false;
     float currentTime;
@@ -20,25 +21,28 @@ public class ObeliskFindPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isTouch)
+        if (isTouch)
         {
             // 카메라 전환: camera
             camera.SetActive(true);
             // 플레이어 움직임 제한 : OVRCameraRig, PlayerMove 스크립트
-            //cameraRig.enabled = false;
-            // 카메라 줌인
-            currentTime += Time.deltaTime;
-            if (currentTime < 4)
-            {
-                camera.transform.position -= new Vector3(1, 0, 0) * Time.deltaTime;
-            }
+
             // 철장 올라감
             if (cage.transform.position.y < 15)
             {
                 cage.transform.position += Vector3.up * 2 * Time.deltaTime;
             }
-            // 적의 등장 기능 켜기: Appear()
-            Enemy_Boss.instance.Appear();
+            // 카메라 줌인
+            currentTime += Time.deltaTime;
+            if (currentTime < 4)
+            {
+                camera.transform.position -= new Vector3(1, 0, 0) * Time.deltaTime;
+                // 적의 등장 기능 켜기: Appear()
+                Enemy_Boss.instance.Appear();
+                BoxCollider box = GetComponent<BoxCollider>();
+                box.enabled = false;
+                particle.SetActive(false);
+            }
         }
     }
 
