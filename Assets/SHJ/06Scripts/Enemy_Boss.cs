@@ -76,26 +76,39 @@ public class Enemy_Boss : MonoBehaviour
     }
 
     // <보스 등장 방식>
-    // 제자리 흔들거리기
+    // 제자리 흔들거리기 : delay
     // 플레이어 감지하면(빛나는 돌 반경안에 들어오면)
-    // 0. 플레이어 카메라 및 움직임 정지
-    // 1. 카메라 전환
-    // 2. 철장 올라감
-    // 3. 보스 특정 지점으로 이동
+    // 0. 플레이어 카메라 및 움직임 정지 v
+    // 1. 카메라 전환 v
+    // 2. 철장 올라감 v
+    // 3. 보스 특정 지점으로 이동 : void Appear()
     // 4. 카메라도 같이 이동
     // 5. 보스 으르렁
     // 6. 플레이어 다시 움직임 및 카메라 켜기
 
+    public Transform appearPos;
+    public void Appear()
+    {
+        // 적이 등장 위치로 이동
+        Vector3 dir = appearPos.position - transform.position;
+        float distance = dir.magnitude;
+        agent.destination = appearPos.position;
+        // 이동하는 동안 걷기 애니메이션
+        float dis = Vector3.Distance(transform.position, appearPos.position);
+        anim.SetFloat("", dis); // 거리를 계산해서 1보다 크면 걷기
+        // Pos에 도착하면 울부짖기
+        // 울부짖기 시작 3초 후 (코루틴)
+        // 1. 카메라 끄기
+        // 2. 플레이어 카메라 및 스크립트 켜기
+        // 3. 적 아이들 상태로 전환
+
+        wall.SetActive(true);
+        //wall.GetComponent<BoxCollider>().enabled = true;
+    }
+
     private void Delay()
     {
 
-        float distance = Vector3.Distance(Target.position, transform.position);
-        if (distance < moveRange)
-        {
-            agent.enabled = true;
-            m_State = EnemyState.Idle;
-            anim.SetTrigger("setIdle");
-        }
     }
 
     float currentTime = 0;
@@ -104,8 +117,6 @@ public class Enemy_Boss : MonoBehaviour
     // Idle 상태에서 일정시간이 지나면 이동으로 전환
     private void Idle()
     {
-        wall.SetActive(true);
-        //wall.GetComponent<BoxCollider>().enabled = true;
         currentTime += Time.deltaTime;
         if (currentTime > 2f)
         {

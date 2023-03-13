@@ -1,0 +1,61 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ObeliskFindPlayer : MonoBehaviour
+{
+    //public OVRCameraRig cameraRig;
+    public new GameObject camera;
+    public GameObject cage;
+    public GameObject enemy;
+
+    bool isTouch = false;
+    float currentTime;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(isTouch)
+        {
+            // 카메라 전환: camera
+            camera.SetActive(true);
+            // 플레이어 움직임 제한 : OVRCameraRig, PlayerMove 스크립트
+            //cameraRig.enabled = false;
+            // 카메라 줌인
+            currentTime += Time.deltaTime;
+            if (currentTime < 4)
+            {
+                camera.transform.position -= new Vector3(1, 0, 0) * Time.deltaTime;
+            }
+            // 철장 올라감
+            if (cage.transform.position.y < 15)
+            {
+                cage.transform.position += Vector3.up * 2 * Time.deltaTime;
+            }
+            // 적의 등장 기능 켜기: Appear()
+            Enemy_Boss.instance.Appear();
+        }
+    }
+
+    // <보스 등장 방식>
+    // 제자리 흔들거리기
+    // 플레이어 감지하면(빛나는 돌 반경안에 들어오면)
+    // 0. 플레이어 카메라 및 움직임 정지
+    // 1. 카메라 전환
+    // 2. 철장 올라감
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            other.GetComponent<PlayerMove>().enabled = false;
+            isTouch = true;
+        }
+    }
+
+}
