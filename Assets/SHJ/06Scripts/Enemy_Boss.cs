@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oculus.Platform.Samples.VrHoops;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -24,10 +25,18 @@ public class Enemy_Boss : MonoBehaviour
 
     public GameObject wall;
 
+    private void Awake()
+    {
+        if (!instance)
+        {
+            instance = this;
+        }
+    }
 
     public enum EnemyState
     {
         Delay,
+        Appear,
         Idle,
         Move,
         Attack,
@@ -51,13 +60,19 @@ public class Enemy_Boss : MonoBehaviour
 
     }
 
+    public GameObject undeadFactory;
+    public GameObject[] undeadPos;
+    float makeTime = 0;
+
     void Update()
     {
 
         switch (m_State)
         {
             case EnemyState.Delay:
-                Delay();
+                break;
+            case EnemyState.Appear:
+                Appear();
                 break;
             case EnemyState.Idle:
                 Idle();
@@ -72,7 +87,18 @@ public class Enemy_Boss : MonoBehaviour
                 break;
         }
 
-        //print(m_State);
+        print(m_State);
+
+        makeTime += Time.deltaTime;
+        if (makeTime > 10)
+        {
+            GameObject undead = Instantiate(undeadFactory);
+            int undeadCount = Random.Range(0, undeadPos.Length - 1);
+            undead.transform.position = undeadPos[undeadCount].transform.position;
+            undead.transform.forward = undeadPos[undeadCount].transform.forward;
+            makeTime = 0;
+        }
+
     }
 
     // <보스 등장 방식>
@@ -81,33 +107,47 @@ public class Enemy_Boss : MonoBehaviour
     // 0. 플레이어 카메라 및 움직임 정지 v
     // 1. 카메라 전환 v
     // 2. 철장 올라감 v
-    // 3. 보스 특정 지점으로 이동 : void Appear()
-    // 4. 카메라도 같이 이동
-    // 5. 보스 으르렁
-    // 6. 플레이어 다시 움직임 및 카메라 켜기
+    // 3. 보스 특정 지점으로 이동 : void Appear() v
+    // 4. 카메라도 같이 이동 -> boss 안에 카메라 넣기 v
+    // 5. 보스 으르렁 v
+    // 6. 플레이어 다시 움직임 및 카메라 끄기 v
 
+    bool isColse = true;
     public Transform appearPos;
     public void Appear()
     {
-        // 적이 등장 위치로 이동
-        Vector3 dir = appearPos.position - transform.position;
-        float distance = dir.magnitude;
-        agent.destination = appearPos.position;
-        // 이동하는 동안 걷기 애니메이션
-        float dis = Vector3.Distance(transform.position, appearPos.position);
-        anim.SetFloat("", dis); // 거리를 계산해서 1보다 크면 걷기
-        // Pos에 도착하면 울부짖기
-        // 울부짖기 시작 3초 후 (코루틴)
-        // 1. 카메라 끄기
-        // 2. 플레이어 카메라 및 스크립트 켜기
-        // 3. 적 아이들 상태로 전환
-
         wall.SetActive(true);
         //wall.GetComponent<BoxCollider>().enabled = true;
-    }
 
-    private void Delay()
+        // 적이 등장 위치로 이동
+        Vector3 dir = appearPos.position - transform.position;
+        dir.y = 0;
+        float distance = dir.magnitude;
+        agent.destination = appearPos.position;
+        float dis = Vector3.Distance(transform.position, appearPos.position);
+        // 이동하는 동안 걷기 애니메이션
+        anim.SetFloat("Chase", dis); // 거리를 계산해서 1보다 크면 뒤쫓기
+        if (dis < 1 && isColse)
+        {
+            // Pos에 도착하면 울부짖기
+            anim.SetTrigger("Roar");
+            StartCoroutine("CameraChange");
+        }
+    }
+    public new GameObject camera;
+
+    IEnumerator CameraChange()
     {
+        // 울부짖기 시작 2초 후 (코루틴)
+        yield return new WaitForSeconds(2f);
+
+        // 1. 카메라 끄기
+        //camera.SetActive(false);
+        Destroy(camera);
+        // 2. 플레이어 스크립트 켜기
+        Target.GetComponent<PlayerMove>().enabled = true;
+        // 3. 적 아이들 상태로 전환
+        m_State = EnemyState.Idle;
     }
 
     float currentTime = 0;
@@ -127,7 +167,7 @@ public class Enemy_Boss : MonoBehaviour
         }
     }
 
-    public float attackRange = 3f;
+    public float attackRange = 10f;
     // 타겟 방향으로 이동. 일정 시간 후에 공격
     private void Move()
     {
@@ -136,9 +176,9 @@ public class Enemy_Boss : MonoBehaviour
         agent.destination = Target.position;
         currentTime += Time.deltaTime;
         // 이동하다 일정시간 후에 공격으로 전환
-        if (currentTime > 5f)
+        if (currentTime > 1f)
         {
-            agent.enabled = false;
+            agent.enabled = true;
             m_State = EnemyState.Attack;
             currentTime = 0;
         }
@@ -153,32 +193,38 @@ public class Enemy_Boss : MonoBehaviour
         Vector3 dir = Target.position - transform.position;
         dir.y = 0;
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime);
-        // 3가지 공격 패턴
-        int percent = Random.Range(0, 5);
+        // 2가지 공격 패턴
+        // 1. 가까이 있으면 때리기
+        // 2. 랜덤 확률로 포도알 생성
+        // 3. 포도알이 플레이어 따라가기
 
         float distance = Vector3.Distance(Target.transform.position, transform.position);
 
-        // 3f 범위 안에 있으면 공격
-        if (distance < 3f)
+        if (distance < 4f) // 4f 범위 안에 있으면 펀치
         {
-            // 펀치
-            isAnim = true;
-            anim.SetTrigger("Punch");
-            StartCoroutine("PlayerTrack");
+            currentTime += Time.deltaTime;
+            if (currentTime > 1)
+            {
+                currentTime = 0;
+                isAnim = true;
+                agent.enabled = false;
+                anim.SetTrigger("Punch");
+                StartCoroutine("PlayerTrack");
+            }
         }
-        else if (percent <= 2 && distance > 3f)
+        else if (distance > 5f && isAnim == false) // 5f 범위 밖에 있으면 해골 날리기
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime);
-            Fire();
+            currentTime += Time.deltaTime;
+            if (currentTime > 5)
+            {
+                currentTime = 0;
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime);
+                isExistence = true;
+                Fire();
+            }
         }
-        else if (percent <= 5 && distance > 3f)
-        {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime);
-            Sprint();
-        }
-
         // 공격범위를 벗어나면 이동으로 전환
-        if (distance > attackRange && isAnim == false)
+        else if (distance > attackRange && isAnim == false)
         {
             m_State = EnemyState.Move;
             agent.enabled = true;
@@ -186,62 +232,48 @@ public class Enemy_Boss : MonoBehaviour
         }
     }
 
-    bool isSprint = false;
+    public GameObject skeletonFactory;
+    public GameObject[] skeletonPos;
+    bool isExistence = false;
+
     private void Fire()
     {
-        // 파이어 공격
-        // 손을 내미는 애니메이션
+        anim.SetTrigger("Roar02");
+        // agent 중지
+        agent.enabled = false;
+        // Pos 4개에 해골 동시 생성
         isAnim = true;
-        anim.SetTrigger("Fire");
-        StartCoroutine("PlayerTrack");
-    }
-
-    public GameObject fireFactory;
-    public GameObject firePos;
-
-    void OnFire()
-    {
-        print("Fire");
-        GameObject fire = Instantiate(fireFactory);
-        fire.transform.position = firePos.transform.position;
-        fire.transform.forward = firePos.transform.forward;
-    }
-
-    private void Sprint()
-    {
-        // 무기 내밀면서 달려들기
-        // 애니메이션
-        isAnim = true;
-        anim.SetTrigger("Sprint");
-        isSprint = true;
-        StartCoroutine(Stay());
+        if (isExistence)
+        {
+            GameObject skeleton = Instantiate(skeletonFactory);
+            int EnemyCount = Random.Range(0, skeletonPos.Length - 1);
+            skeleton.transform.position = skeletonPos[EnemyCount].transform.position;
+            skeleton.transform.forward = skeletonPos[EnemyCount].transform.forward;
+            isExistence = false;
+        }
+        StartCoroutine("PlayerTrack02");
     }
 
     private IEnumerator PlayerTrack()
     {
-        // 공격 후 2초 딜레이 후 Move
-        yield return new WaitForSeconds(2);
+        // 공격 후 1초 딜레이 후 Move
+        yield return new WaitForSeconds(0.5f);
         m_State = EnemyState.Move;
         agent.enabled = true;
         isAnim = false;
         anim.SetTrigger("setMove");
     }
-    private IEnumerator Stay()
+
+    private IEnumerator PlayerTrack02()
     {
-        // Sprint 후 3초 딜레이 -> Idle 2초 딜레이 -> Move
-        yield return new WaitForSeconds(3);
-        m_State = EnemyState.Idle;
-        anim.SetTrigger("setIdle");
+        // 공격 후 2초 딜레이 후 Move
+        yield return new WaitForSeconds(5);
+        m_State = EnemyState.Move;
+        agent.enabled = true;
+        isAnim = false;
+        anim.SetTrigger("setMove");
     }
 
-    // sprint 상태에서 충돌하면 player HP 감소
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Player") && isSprint)
-        {
-            this.GetComponent<EnemyAttackEvent>().OnMyHit();
-        }
-    }
     // 언데드는 HP 2
     // 트롤은 HP 5
     // 보스는 HP 10
@@ -258,7 +290,6 @@ public class Enemy_Boss : MonoBehaviour
         enemyHp--;
         if (enemyHp > 0)
         {
-
             print("enemyHp: " + enemyHp);
             anim.SetTrigger("Damage");
             StartCoroutine(OnDamage());
