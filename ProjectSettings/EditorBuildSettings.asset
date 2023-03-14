@@ -6,17 +6,23 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/SHJ/01Scene/Intro.unity
+    guid: 9e5cd55bde4e1034fafa4b333ef3b5eb
+  - enabled: 1
+    path: Assets/SHJ/01Scene/Prologue.unity
+    guid: 0d135fe73468dd64c85cef17b347b7d1
+  - enabled: 1
     path: Assets/SHJ/01Scene/Main.unity
-    guid: 95221902b4289344e81d432de2984955
+    guid: 5aef75228d69e1c43ab349642030eb06
+  - enabled: 1
+    path: Assets/SHJ/01Scene/MainWa.unity
+    guid: 60e9797f73afc3849aa08e6ab1da3ea5
+  - enabled: 1
+    path: Assets/SHJ/01Scene/MainWi.unity
+    guid: 0f8b65ed310b8b141a4af3bc27cdbf1e
   - enabled: 1
     path: Assets/SHJ/01Scene/Charactor.unity
     guid: 1203a3824f2b46647967b0a2f6e49a4a
-  - enabled: 1
-    path: Assets/SHJ/01Scene/Prologue.unity
-    guid: 4bcf201c253dacd4399aad556808f26c
-  - enabled: 1
-    path: Assets/SHJ/01Scene/Level.unity
-    guid: 7736d0e6aaf7a304a97528f8600687fe
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 5d350379e151df440ac3dd3da1612a46, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: b31cf6d80c39bad4ca56d1a07b6a3c52, type: 2}

@@ -22,7 +22,6 @@ public class PlayerMove : MonoBehaviour
     CharacterController cc;
     Animator anim;
     public Transform body;
-    public Transform hitCube;
     //public Transform bulletEffect;
     //ParticleSystem psBulletEffect;
     // Start is called before the first frame update
@@ -106,44 +105,44 @@ public class PlayerMove : MonoBehaviour
         //}
     }
     //public Image Screen;
-    void OnHit()
-    {
-        Collider[] cols = Physics.OverlapBox(hitCube.position, hitCube.localScale * 0.5f);
-        print("attack");
-        for (int i = 0; i < cols.Length; i++)
-        {
-            if (cols[i].CompareTag("Undead"))
-            {
-                var enemy = cols[i].GetComponentInChildren<Enemy>();
-                CamShakeManager.Instance.Play();
-                if (enemy.enemyHp != 0)
-                {
-                    enemy.Damage();
-                    print("enemy min hp");
-                }
-            }
-            else if (cols[i].CompareTag("Troll"))
-            {
-                var enemy = cols[i].GetComponentInChildren<Enemy_Mid>();
-                CamShakeManager.Instance.Play();
-                if (enemy.enemyHp != 0)
-                {
-                    enemy.Damage();
-                    print("enemy min hp");
-                }
-            }
-            else if (cols[i].CompareTag("Boss"))
-            {
-                var enemy = cols[i].GetComponentInChildren<Enemy_Boss>();
-                CamShakeManager.Instance.Play();
-                if (enemy.enemyHp != 0)
-                {
-                    enemy.Damage();
-                    print("enemy min hp");
-                }
-            }
-        }
-    }
+    //void OnHit() -> Attack으로 이동
+    //{
+    //    Collider[] cols = Physics.OverlapBox(hitCube.position, hitCube.localScale * 0.5f);
+    //    print("attack");
+    //    for (int i = 0; i < cols.Length; i++)
+    //    {
+    //        if (cols[i].CompareTag("Undead"))
+    //        {
+    //            var enemy = cols[i].GetComponentInChildren<Enemy>();
+    //            CamShakeManager.Instance.Play();
+    //            if (enemy.enemyHp != 0)
+    //            {
+    //                enemy.Damage();
+    //                print("enemy min hp");
+    //            }
+    //        }
+    //        else if (cols[i].CompareTag("Troll"))
+    //        {
+    //            var enemy = cols[i].GetComponentInChildren<Enemy_Mid>();
+    //            CamShakeManager.Instance.Play();
+    //            if (enemy.enemyHp != 0)
+    //            {
+    //                enemy.Damage();
+    //                print("enemy min hp");
+    //            }
+    //        }
+    //        else if (cols[i].CompareTag("Boss"))
+    //        {
+    //            var enemy = cols[i].GetComponentInChildren<Enemy_Boss>();
+    //            CamShakeManager.Instance.Play();
+    //            if (enemy.enemyHp != 0)
+    //            {
+    //                enemy.Damage();
+    //                print("enemy min hp");
+    //            }
+    //        }
+    //    }
+    //}
     //void ScreenUI()
     //{
     //    print("UI");

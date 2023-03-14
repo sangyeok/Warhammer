@@ -136,12 +136,6 @@ public class Enemy : MonoBehaviour
 
     public void Damage()
     {
-        if(enemyHp < 0)
-        {
-            enemyHp = 0;
-            return;
-        }
-        StopAllCoroutines();
         agent.enabled = false;
         enemyHp--;
         if (enemyHp > 0)

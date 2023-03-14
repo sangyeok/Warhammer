@@ -15,11 +15,12 @@ public class CharactorSelect : MonoBehaviour
 
     public bool isWarrior = false;
     public bool isWizard = false;
+    bool isButton = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        isWarrior = true;
+
         warriorSet.SetActive(true);
         warrior3d.SetActive(true);
         wizardSet.SetActive(false);
@@ -30,7 +31,17 @@ public class CharactorSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (isButton)
+        {
+            if (isWarrior && !isWizard)
+            {
+                SceneManager.LoadScene("MainWa");
+            }
+            else if (isWizard && !isWarrior)
+            {
+                SceneManager.LoadScene("MainWi");
+            }
+        }
     }
 
     public void UpdateWarrior()
@@ -38,6 +49,7 @@ public class CharactorSelect : MonoBehaviour
         isWarrior = true;
         if (isWarrior)
         {
+            isWizard = false;
             warriorSet.SetActive(true);
             warrior3d.SetActive(true);
             wizardSet.SetActive(false);
@@ -50,6 +62,7 @@ public class CharactorSelect : MonoBehaviour
         isWizard = true;
         if (isWizard)
         {
+            isWarrior = false;
             warriorSet.SetActive(false);
             warrior3d.SetActive(false);
             wizardSet.SetActive(true);
@@ -59,6 +72,6 @@ public class CharactorSelect : MonoBehaviour
 
     public void setMain()
     {
-        SceneManager.LoadScene("Main");
+        isButton= true;
     }
 }

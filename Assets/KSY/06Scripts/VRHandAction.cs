@@ -73,12 +73,12 @@ public class VRHandAction : MonoBehaviour
                 grabbedObject.transform.position = transform.position;
 
                 // 잡은 물체를 손의 자식으로 기억
-                grabbedObject.transform.parent = rController;
+                //grabbedObject.transform.parent = rController;
 
                 //grabbedObject.transform.forward = rController.forward;
 
                 // 잡은 물체의 물리기능 정지
-                grabbedObject.GetComponent<Rigidbody>().isKinematic = true;
+                //grabbedObject.GetComponent<Rigidbody>().isKinematic = true;
             }
 
             else
@@ -97,7 +97,7 @@ public class VRHandAction : MonoBehaviour
             isGrabbed = false;
 
             // 물리 기능 활성화
-            grabbedObject.GetComponent<Rigidbody>().isKinematic = false;
+            //grabbedObject.GetComponent<Rigidbody>().isKinematic = false;
 
             // 손에서 잡았던 오브젝트 놓기
             grabbedObject.transform.parent = null;

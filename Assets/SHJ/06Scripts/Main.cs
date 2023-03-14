@@ -12,23 +12,23 @@ public class Main : MonoBehaviour
     // Prologue -> 영상 재생
     // Quit -> 게임 종료
 
-    public GameObject warriorinfo;
-    public GameObject warrior3d;
-    public GameObject wizardinfo;
-    public GameObject wizard3d;
-
     public bool isWarrior = false;
     public bool isWizard = false;
-
+    public GameObject player;
 
     // Start is called before the first frame update
     void Start()
     {
-        isWarrior = true;
-        warriorinfo.SetActive(true);
-        warrior3d.SetActive(true);
-        wizardinfo.SetActive(false);
-        wizard3d.SetActive(false);
+        if(player.name == "Erika")
+        {
+            isWizard= true;
+            isWarrior= false;
+        }
+        else if(player.name == "Paladin")
+        {
+            isWarrior= true;
+            isWizard= false;
+        }
     }
 
     // Update is called once per frame
@@ -45,7 +45,14 @@ public class Main : MonoBehaviour
     public void setPlay()
     {
         // 마을 맵 씬 연결하기
-        SceneManager.LoadScene("Level");
+        if (isWizard)
+        {
+            SceneManager.LoadScene("LevelWi");
+        } else if (isWarrior)
+        {
+            SceneManager.LoadScene("LevelWa");
+        }
+        
     }     
     
     public void setPrologue()

@@ -20,7 +20,7 @@ public class Video : MonoBehaviour
     void Update()
     {
         StartCoroutine(InputText(time));
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+        if (OVRInput.GetDown(OVRInput.Button.Any, OVRInput.Controller.All))
         {
             SceneManager.LoadScene("Main");
         }

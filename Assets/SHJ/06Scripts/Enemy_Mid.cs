@@ -155,12 +155,12 @@ public class Enemy_Mid : MonoBehaviour
     public int enemyHp = 5;
     public void Damage()
     {
-        if (enemyHp < 0)
-        {
-            enemyHp = 0;
-            return;
-        }
-        StopAllCoroutines();
+        //if (enemyHp < 0)
+        //{
+        //    enemyHp = 0;
+        //    return;
+        //}
+        //StopAllCoroutines();
         agent.enabled = false;
         enemyHp--;
         if (enemyHp > 0)
