@@ -12,6 +12,8 @@ public class ObeliskFindPlayer : MonoBehaviour
     bool isTouch = false;
     float currentTime;
 
+    public GameObject quest05; // 트리거 닿는 순간 quest5 끄기
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,7 +47,15 @@ public class ObeliskFindPlayer : MonoBehaviour
                 particle.SetActive(false);
             }
         }
+
+        // 보스가 사망하면 파티클 키기
+        if(Enemy_Boss.instance.isDie)
+        {
+            particle.SetActive(true);
+        }
     }
+
+
 
     // <보스 등장 방식>
     // 제자리 흔들거리기
@@ -60,8 +70,10 @@ public class ObeliskFindPlayer : MonoBehaviour
         {
             // 플레이어 움직임 제한 : PlayerMove 스크립트
             other.GetComponent<PlayerMove>().enabled = false;
+            quest05.SetActive(false);
             isTouch = true;
         }
+
     }
 
 }

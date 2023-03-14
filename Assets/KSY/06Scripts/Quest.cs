@@ -7,12 +7,20 @@ public class Quest : MonoBehaviour
     public GameObject Mark;
     GameObject target;
     public GameObject quad;
+
+    // 퀘스트
+    public GameObject quest00; // 퀘스트 선택 ui 끝나면 quest0 켜기
+    public GameObject quest01; // 퀘스트 선택 ui 끝나면 quest1 끄기
+                               //quest00.SetActive(false);
+                               //quest01.SetActive(true);
+
     // Start is called before the first frame update
     void Start()
     {
         target = GameObject.Find("Player");
     }
     int a = 1;
+
     void Update()
     {
         if (Mark.transform.localPosition.y < 4.7f)
@@ -34,12 +42,11 @@ public class Quest : MonoBehaviour
     }
 
     // 현지 스크립트에 있던 내용
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Player"))
-    //    {
-    //        quest.SetActive(true);
-    //        Potal.GetComponent<ObeliskHit>().isQuest = true;
-    //    }
-    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            //Potal.GetComponent<ObeliskHit>().isQuest = true;
+        }
+    }
 }

@@ -25,6 +25,10 @@ public class Enemy_Boss : MonoBehaviour
 
     public GameObject wall;
 
+    // 퀘스트
+    public GameObject quest06; // 보스 등장 anim 종료 후 quest6 켜기 보스 사망 후 quest6 끄기
+    public GameObject quest07; // 보스 사망 후 quest7 켜기
+
     private void Awake()
     {
         if (!instance)
@@ -88,15 +92,19 @@ public class Enemy_Boss : MonoBehaviour
         }
 
         print(m_State);
-
-        makeTime += Time.deltaTime;
-        if (makeTime > 10)
+        if (isColse)
         {
-            GameObject undead = Instantiate(undeadFactory);
-            int undeadCount = Random.Range(0, undeadPos.Length - 1);
-            undead.transform.position = undeadPos[undeadCount].transform.position;
-            undead.transform.forward = undeadPos[undeadCount].transform.forward;
-            makeTime = 0;
+            makeTime += Time.deltaTime;
+            print(makeTime);
+            if (makeTime > 15)
+            {
+                GameObject undead = Instantiate(undeadFactory);
+                //int undeadCount = Random.Range(0, undeadPos.Length - 1);
+                undead.transform.position = undeadPos[0].transform.position;
+                undead.transform.rotation = undeadPos[0].transform.rotation;
+                makeTime = 0;
+            }
+
         }
 
     }
@@ -148,6 +156,7 @@ public class Enemy_Boss : MonoBehaviour
         Target.GetComponent<PlayerMove>().enabled = true;
         // 3. 적 아이들 상태로 전환
         m_State = EnemyState.Idle;
+        quest06.SetActive(true);
     }
 
     float currentTime = 0;
@@ -296,10 +305,15 @@ public class Enemy_Boss : MonoBehaviour
         }
         else if (enemyHp <= 0)
         {
+            quest06.SetActive(false);
             anim.SetTrigger("Die");
+            isDie = true;
+            quest07.SetActive(true);
             cc.enabled = false;
         }
     }
+    // 보스가 죽었을 때, 보스맵에서의 포탈 생성, 참일때 이동 가능
+    public bool isDie = false;
 
     public float damageDelayTime = 2;
     private IEnumerator OnDamage()
