@@ -64,13 +64,13 @@ public class Enemy_Boss : MonoBehaviour
 
     }
 
+    // 언데드 랜덤 생성
     public GameObject undeadFactory;
     public GameObject[] undeadPos;
     float makeTime = 0;
 
     void Update()
     {
-
         switch (m_State)
         {
             case EnemyState.Delay:
@@ -95,18 +95,15 @@ public class Enemy_Boss : MonoBehaviour
         if (isColse)
         {
             makeTime += Time.deltaTime;
-            print(makeTime);
             if (makeTime > 15)
             {
                 GameObject undead = Instantiate(undeadFactory);
-                //int undeadCount = Random.Range(0, undeadPos.Length - 1);
-                undead.transform.position = undeadPos[0].transform.position;
-                undead.transform.rotation = undeadPos[0].transform.rotation;
+                int undeadCount = Random.Range(0, undeadPos.Length - 1);
+                undead.transform.position = undeadPos[undeadCount].transform.position;
+                undead.transform.rotation = undeadPos[undeadCount].transform.rotation;
                 makeTime = 0;
             }
-
         }
-
     }
 
     // <보스 등장 방식>
@@ -176,7 +173,7 @@ public class Enemy_Boss : MonoBehaviour
         }
     }
 
-    public float attackRange = 10f;
+    public float attackRange = 20f;
     // 타겟 방향으로 이동. 일정 시간 후에 공격
     private void Move()
     {
@@ -185,16 +182,13 @@ public class Enemy_Boss : MonoBehaviour
         agent.destination = Target.position;
         currentTime += Time.deltaTime;
         // 이동하다 일정시간 후에 공격으로 전환
-        if (currentTime > 1f)
+        if (currentTime > .8f)
         {
             agent.enabled = true;
             m_State = EnemyState.Attack;
             currentTime = 0;
         }
     }
-
-    public float attackDelaytime = 5;
-
     bool isAnim = false; // animation 중단문제 해결용
 
     private void Attack()
@@ -209,7 +203,7 @@ public class Enemy_Boss : MonoBehaviour
 
         float distance = Vector3.Distance(Target.transform.position, transform.position);
 
-        if (distance < 4f) // 4f 범위 안에 있으면 펀치
+        if (distance < 10f) // 10f 범위 안에 있으면 펀치
         {
             currentTime += Time.deltaTime;
             if (currentTime > 1)
@@ -221,7 +215,7 @@ public class Enemy_Boss : MonoBehaviour
                 StartCoroutine("PlayerTrack");
             }
         }
-        else if (distance > 5f && isAnim == false) // 5f 범위 밖에 있으면 해골 날리기
+        else if (distance > 11f && isAnim == false) // 5f 범위 밖에 있으면 해골 날리기
         {
             currentTime += Time.deltaTime;
             if (currentTime > 5)

@@ -23,9 +23,9 @@ public class Intro : MonoBehaviour
     {
         currentTime += Time.deltaTime;
         StartCoroutine(Logo(time));
-        if (currentTime > 5f && Input.anyKeyDown)
+        if (currentTime > 7f && OVRInput.GetDown(OVRInput.Button.Any,OVRInput.Controller.All))
         {
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene("Charactor");
         }
     }
 

@@ -47,10 +47,4 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
-
-
-
-
-    public GameObject dungeonQuestBefore;
-    public GameObject dungeonQuest;
 }

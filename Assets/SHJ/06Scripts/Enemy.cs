@@ -39,6 +39,7 @@ public class Enemy : MonoBehaviour
         cc = GetComponent<CharacterController>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        agent.Warp(transform.position);
     }
 
     void Update()
