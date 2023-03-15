@@ -1,6 +1,7 @@
 using UnityEngine;
 
 // 적이 공격할 때 이벤트가 호출되면 처리할 클래스
+// 최종
 
 public class EnemyHitEvent : MonoBehaviour
 {

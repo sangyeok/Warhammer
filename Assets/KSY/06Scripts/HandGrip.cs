@@ -6,18 +6,22 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
+// 최종
+
 // 만약 핸드트리거를 눌렀을 때 반대쪽 컨트롤러와의 거리가 2M 이하라면
 // 손에 폭탄(GripObject)을 쥐고싶다.
 // 만약 핸드트리거를 뗏을 때 손에 폭탄이 있다면 놓고싶다.
 public class HandGrip : MonoBehaviour
 {
     public OVRInput.Controller controlller;
+    public Transform bow;
     public Transform otherHand;
     public GameObject arrowFactory;
     public GameObject grab; // == bow
     public GameObject grabOrigin;
     public Transform arrowPos;
     public float speed = 10f;
+    Camera cam;
     Vector3 dir;
     //bool canGrip = false;
     //GameObject bow;
@@ -25,6 +29,7 @@ public class HandGrip : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        cam = Camera.main;
         //bow = GameObject.Find("BowLineCenter");
     }
 
@@ -60,9 +65,9 @@ public class HandGrip : MonoBehaviour
             {
                 forceRate = 0;
             }
-            dir = grabOrigin.transform.position - arrowPos.transform.position;
+            dir = -bow.forward;
             dir.Normalize();
-            grab.transform.localPosition = Vector3.zero + dir * forceRate * 2;
+            grab.transform.position = grabOrigin.transform.position + dir * forceRate * 2;
             gripObj.transform.forward = -dir;
         }
 

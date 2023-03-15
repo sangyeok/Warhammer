@@ -6,6 +6,8 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 최종
+
 // 사용자의 입력에 따라 앞뒤 좌우로 이동하고 싶다.
 // Character Controller 컴포넌트를 이용해 이동하게 하자.
 // 중력을 적용받도록 하고 싶다.
@@ -15,6 +17,14 @@ using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
+    public static PlayerMove Instance;
+    public Transform foot;
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+
     public float speed = 5f;
     public float gravity = -20f;
     public float yVelocity = 0;
@@ -22,9 +32,13 @@ public class PlayerMove : MonoBehaviour
     CharacterController cc;
     Animator anim;
     public Transform body;
+    public Transform hitCube;
+
     //public Transform bulletEffect;
     //ParticleSystem psBulletEffect;
     // Start is called before the first frame update
+
+
     void Start()
     {
         cc = GetComponent<CharacterController>();
@@ -104,56 +118,5 @@ public class PlayerMove : MonoBehaviour
         //    anim.SetTrigger("onweapon");
         //}
     }
-    //public Image Screen;
-    //void OnHit() -> Attack으로 이동
-    //{
-    //    Collider[] cols = Physics.OverlapBox(hitCube.position, hitCube.localScale * 0.5f);
-    //    print("attack");
-    //    for (int i = 0; i < cols.Length; i++)
-    //    {
-    //        if (cols[i].CompareTag("Undead"))
-    //        {
-    //            var enemy = cols[i].GetComponentInChildren<Enemy>();
-    //            CamShakeManager.Instance.Play();
-    //            if (enemy.enemyHp != 0)
-    //            {
-    //                enemy.Damage();
-    //                print("enemy min hp");
-    //            }
-    //        }
-    //        else if (cols[i].CompareTag("Troll"))
-    //        {
-    //            var enemy = cols[i].GetComponentInChildren<Enemy_Mid>();
-    //            CamShakeManager.Instance.Play();
-    //            if (enemy.enemyHp != 0)
-    //            {
-    //                enemy.Damage();
-    //                print("enemy min hp");
-    //            }
-    //        }
-    //        else if (cols[i].CompareTag("Boss"))
-    //        {
-    //            var enemy = cols[i].GetComponentInChildren<Enemy_Boss>();
-    //            CamShakeManager.Instance.Play();
-    //            if (enemy.enemyHp != 0)
-    //            {
-    //                enemy.Damage();
-    //                print("enemy min hp");
-    //            }
-    //        }
-    //    }
-    //}
-    //void ScreenUI()
-    //{
-    //    print("UI");
-    //    //Screen.SetActive(true);
-    //    //float curTime = 0;
-    //    //float durTime = 3;
-    //    //curTime += Time.time;
-    //    //if(curTime> durTime)
-    //    //{
-    //    //    curTime = 0;
-    //    //    Screen.SetActive(false);
-    //    //}
-    //}
+    
 }

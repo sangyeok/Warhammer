@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+// √÷¡æ
 public class playerHealth : MonoBehaviour
 {
     public static int hp = 10;

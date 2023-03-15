@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
-    // 지정된 위치들에서 랜덤시간 간격에 한번씩 적을 만들고 싶다.
+// 최종
+// 지정된 위치들에서 랜덤시간 간격에 한번씩 적을 만들고 싶다.
 public class EnemyManager : MonoBehaviour
 {
     // 필요속성 : 위치들, 랜덤시간 간격, 경과시간

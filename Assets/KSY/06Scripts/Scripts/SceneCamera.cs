@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+// √÷¡æ
 public class SceneCamera : MonoBehaviour
 {
     public GameObject mainCamera;

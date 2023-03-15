@@ -5,6 +5,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
+
+//최종
+
+
 // 적 구현 기능
 // 1. 기본 Idle 
 // 2. 플레이어 발견 시 이동
@@ -17,6 +21,8 @@ public class Enemy_Mid : MonoBehaviour
     public float speed = 1f;
     CharacterController cc = null;
     Animator anim;
+    public Slider sliderHP;
+
 
     public enum EnemyState
     {
@@ -37,6 +43,8 @@ public class Enemy_Mid : MonoBehaviour
         {
             Target = player.transform;
         }
+        sliderHP.maxValue = HP;
+        HP = HP;
         cc = GetComponent<CharacterController>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
@@ -155,25 +163,37 @@ public class Enemy_Mid : MonoBehaviour
         isAnim = false;
     }
 
-    public int enemyHp = 5;
+    public int HP = 5;
+
+    int hp;
+    int HP
+    {
+        get { return hp; }
+        set
+        {
+            hp = value;
+            sliderHP.value = hp;
+        }
+    }
+
     public void Damage()
     {
-        //if (enemyHp < 0)
-        //{
-        //    enemyHp = 0;
-        //    return;
-        //}
+        if (HP < 0)
+        {
+            HP = 0;
+            return;
+        }
         StopAllCoroutines();
         agent.enabled = false;
-        enemyHp--;
-        if (enemyHp > 0)
+        HP--;
+        if (HP > 0)
         {
             m_State = EnemyState.Damage;
             //anim.SetTrigger("Damage");
             anim.CrossFade("Mutant Damage", 0.1f, 0);
             StartCoroutine(OnDamage());
         }
-        else if (enemyHp <= 0)
+        else if (HP <= 0)
         {
             m_State = EnemyState.Die;
             //anim.SetTrigger("Die");
