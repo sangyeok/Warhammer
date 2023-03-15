@@ -149,6 +149,7 @@ public class Enemy : MonoBehaviour
             anim.SetTrigger("Die");
             print("enemy dying");
             cc.enabled = false;
+            agent.enabled = false;
         }
     }
 

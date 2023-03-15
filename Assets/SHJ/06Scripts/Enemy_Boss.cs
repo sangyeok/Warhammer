@@ -304,6 +304,7 @@ public class Enemy_Boss : MonoBehaviour
             isDie = true;
             quest07.SetActive(true);
             cc.enabled = false;
+            agent.enabled = false;
         }
     }
     // 보스가 죽었을 때, 보스맵에서의 포탈 생성, 참일때 이동 가능

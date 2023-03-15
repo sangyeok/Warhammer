@@ -323,7 +323,7 @@ MonoBehaviour:
   moveRange: 15
   attackRange: 3
   attackDelaytime: 5
-  enemyHp: 5
+  enemyHp: 3
   damageDelayTime: 1
 --- !u!114 &1544574915552447528
 MonoBehaviour:

@@ -3396,6 +3396,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 832049582}
+        m_TargetAssemblyTypeName: CharactorSelect, Assembly-CSharp
+        m_MethodName: choiceWizard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &135133189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8036,7 +8048,6 @@ RectTransform:
   - {fileID: 1194626198}
   - {fileID: 901997645}
   - {fileID: 2109719423}
-  - {fileID: 832049578}
   m_Father: {fileID: 1211346941}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 8.245}
@@ -18092,18 +18103,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832049577}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: 0.25881898, z: -0, w: 0.96592593}
+  m_LocalPosition: {x: 0, y: 0, z: -368.7499}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2073743094}
-  m_Father: {fileID: 364557348}
-  m_RootOrder: 5
+  m_Father: {fileID: 2109719423}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 65}
+  m_AnchoredPosition: {x: 563.694, y: -475.00012}
   m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &832049579
@@ -30516,8 +30527,8 @@ GameObject:
   - component: {fileID: 1481343902}
   - component: {fileID: 1481343901}
   - component: {fileID: 1481343900}
-  - component: {fileID: 1481343903}
   - component: {fileID: 1481343904}
+  - component: {fileID: 1481343905}
   m_Layer: 5
   m_Name: Player01
   m_TagString: Untagged
@@ -30589,9 +30600,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1481343903}
+      - m_Target: {fileID: 1481343905}
         m_TargetAssemblyTypeName: CharactorSelect, Assembly-CSharp
         m_MethodName: UpdateWarrior
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 832049582}
+        m_TargetAssemblyTypeName: CharactorSelect, Assembly-CSharp
+        m_MethodName: choiceWarrior
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -30639,7 +30662,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1481343898}
   m_CullTransparentMesh: 1
---- !u!114 &1481343903
+--- !u!65 &1481343904
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481343898}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 103, y: 126, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1481343905
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -30657,19 +30693,6 @@ MonoBehaviour:
   wizard3d: {fileID: 4247752016503193452}
   isWarrior: 0
   isWizard: 0
---- !u!65 &1481343904
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481343898}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 103, y: 126, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1485173931
 GameObject:
   m_ObjectHideFlags: 0
@@ -42710,6 +42733,7 @@ RectTransform:
   - {fileID: 1761019467}
   - {fileID: 988913065}
   - {fileID: 1486295488}
+  - {fileID: 832049578}
   m_Father: {fileID: 364557348}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: -30, z: 0}

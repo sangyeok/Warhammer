@@ -174,6 +174,7 @@ public class Enemy_Mid : MonoBehaviour
         {
             anim.SetTrigger("Die");
             cc.enabled = false;
+            agent.enabled = false;
         }
     }
 

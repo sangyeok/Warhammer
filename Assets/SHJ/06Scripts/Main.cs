@@ -47,10 +47,10 @@ public class Main : MonoBehaviour
         // 마을 맵 씬 연결하기
         if (isWizard)
         {
-            SceneManager.LoadScene("LevelWi");
+            SceneManager.LoadScene("Level");
         } else if (isWarrior)
         {
-            SceneManager.LoadScene("LevelWa");
+            SceneManager.LoadScene("Level");
         }
         
     }     
