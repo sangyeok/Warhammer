@@ -88,7 +88,6 @@ public class PlayerMove : MonoBehaviour
         //if (((cc.collisionFlags & CollisionFlags.CollidedBelow) != 0) && Input.GetButtonDown("Jump"))
         if (Input.GetButtonDown("Jump"))
         {
-            print("cc.collisionFlags : " + cc.collisionFlags);
             //if (cc.collisionFlags == CollisionFlags.CollidedBelow)
             if ((cc.collisionFlags & CollisionFlags.CollidedBelow) != 0)
             {

@@ -19,7 +19,6 @@ public class attack : MonoBehaviour
     void OnHit()
     {
         Collider[] cols = Physics.OverlapBox(hitCube.position, hitCube.localScale * 0.5f);
-        print("attack");
         for (int i = 0; i < cols.Length; i++)
         {
             if (cols[i].CompareTag("Undead"))
@@ -29,7 +28,6 @@ public class attack : MonoBehaviour
                 if (enemy.enemyHp != 0)
                 {
                     enemy.Damage();
-                    print("enemy min hp");
                 }
             }
             else if (cols[i].CompareTag("Troll"))
@@ -39,7 +37,6 @@ public class attack : MonoBehaviour
                 if (enemy.enemyHp != 0)
                 {
                     enemy.Damage();
-                    print("enemy min hp");
                 }
             }
             else if (cols[i].CompareTag("Boss"))
@@ -49,7 +46,6 @@ public class attack : MonoBehaviour
                 if (enemy.enemyHp != 0)
                 {
                     enemy.Damage();
-                    print("enemy min hp");
                 }
             }
         }

@@ -44,7 +44,8 @@ public class Enemy_Boss : MonoBehaviour
         Idle,
         Move,
         Attack,
-        Damage
+        Damage,
+        Die
     };
 
     public EnemyState m_State;
@@ -73,8 +74,7 @@ public class Enemy_Boss : MonoBehaviour
     {
         switch (m_State)
         {
-            case EnemyState.Delay:
-                break;
+
             case EnemyState.Appear:
                 Appear();
                 break;
@@ -87,12 +87,9 @@ public class Enemy_Boss : MonoBehaviour
             case EnemyState.Attack:
                 Attack();
                 break;
-            case EnemyState.Damage:
-                break;
         }
 
-        print(m_State);
-        if (isColse)
+        if (isClose)
         {
             makeTime += Time.deltaTime;
             if (makeTime > 15)
@@ -117,7 +114,7 @@ public class Enemy_Boss : MonoBehaviour
     // 5. 보스 으르렁 v
     // 6. 플레이어 다시 움직임 및 카메라 끄기 v
 
-    bool isColse = true;
+    bool isClose = false;
     public Transform appearPos;
     public void Appear()
     {
@@ -132,8 +129,9 @@ public class Enemy_Boss : MonoBehaviour
         float dis = Vector3.Distance(transform.position, appearPos.position);
         // 이동하는 동안 걷기 애니메이션
         anim.SetFloat("Chase", dis); // 거리를 계산해서 1보다 크면 뒤쫓기
-        if (dis < 1 && isColse)
+        if (dis < 7)
         {
+            isClose = true;
             // Pos에 도착하면 울부짖기
             anim.SetTrigger("Roar");
             StartCoroutine("CameraChange");
@@ -167,7 +165,9 @@ public class Enemy_Boss : MonoBehaviour
         {
             currentTime = 0;
             m_State = EnemyState.Move;
-            anim.SetTrigger("setMove");
+            //anim.SetTrigger("setMove");
+            anim.CrossFade("Move", 0.1f, 0);
+
 
             agent.enabled = true;
         }
@@ -211,7 +211,8 @@ public class Enemy_Boss : MonoBehaviour
                 currentTime = 0;
                 isAnim = true;
                 agent.enabled = false;
-                anim.SetTrigger("Punch");
+                //anim.SetTrigger("Punch");
+                anim.CrossFade("Punch", 0.1f, 0);
                 StartCoroutine("PlayerTrack");
             }
         }
@@ -231,7 +232,8 @@ public class Enemy_Boss : MonoBehaviour
         {
             m_State = EnemyState.Move;
             agent.enabled = true;
-            anim.SetTrigger("setMove");
+            //anim.SetTrigger("setMove");
+            anim.CrossFade("Move", 0.1f, 0);
         }
     }
 
@@ -241,7 +243,8 @@ public class Enemy_Boss : MonoBehaviour
 
     private void Fire()
     {
-        anim.SetTrigger("Roar02");
+        //anim.SetTrigger("Roar02");
+        anim.CrossFade("Fire", 0.1f, 0);
         // agent 중지
         agent.enabled = false;
         // Pos 4개에 해골 동시 생성
@@ -264,7 +267,8 @@ public class Enemy_Boss : MonoBehaviour
         m_State = EnemyState.Move;
         agent.enabled = true;
         isAnim = false;
-        anim.SetTrigger("setMove");
+        //anim.SetTrigger("setMove");
+        anim.CrossFade("Move", 0.1f, 0);
     }
 
     private IEnumerator PlayerTrack02()
@@ -274,7 +278,8 @@ public class Enemy_Boss : MonoBehaviour
         m_State = EnemyState.Move;
         agent.enabled = true;
         isAnim = false;
-        anim.SetTrigger("setMove");
+        //anim.SetTrigger("setMove");
+        anim.CrossFade("Move", 0.1f, 0);
     }
 
     // 언데드는 HP 2
@@ -293,14 +298,17 @@ public class Enemy_Boss : MonoBehaviour
         enemyHp--;
         if (enemyHp > 0)
         {
-            print("enemyHp: " + enemyHp);
-            anim.SetTrigger("Damage");
+            m_State = EnemyState.Damage;
+            //anim.SetTrigger("Damage");
+            anim.CrossFade("Butcher Damage", 0.1f, 0);
             StartCoroutine(OnDamage());
         }
         else if (enemyHp <= 0)
         {
+            m_State = EnemyState.Die;
             quest06.SetActive(false);
-            anim.SetTrigger("Die");
+            //anim.SetTrigger("Die");
+            anim.CrossFade("Die", 0.1f, 0);
             isDie = true;
             quest07.SetActive(true);
             cc.enabled = false;

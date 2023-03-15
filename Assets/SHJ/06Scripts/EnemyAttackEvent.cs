@@ -27,7 +27,6 @@ public class EnemyAttackEvent : MonoBehaviour
         float distance = dir.magnitude;
         if(distance < 2f)
         {
-            print("적이 공격함");
             playerHealth.Instance.HP--;
         }
     }

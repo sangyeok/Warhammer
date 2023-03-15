@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 // 마을 -> 던전 포탈 스트립트
 public class ObeliskHit : MonoBehaviour
@@ -9,6 +10,8 @@ public class ObeliskHit : MonoBehaviour
     // 던전 및 마을지점
     public Transform DungeonPos;
     public Transform villagePos;
+
+    public GameObject particle;
 
     // 퀘스트
     public GameObject quest00; // 텔레포트 시도시 quest0 끄기
@@ -33,11 +36,12 @@ public class ObeliskHit : MonoBehaviour
             // 다시 마을 맵으로 이동하는 기능
             inDungeon = true;
             quest07.SetActive(false);
+            BoxCollider box = GetComponent<BoxCollider>();
+            box.enabled = false;
+            particle.SetActive(false);
             StartCoroutine(Teleport(other));
         }
 
-        //카메라 무빙
-        //보스 등장
 
     }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class playerHealth : MonoBehaviour
@@ -24,7 +25,7 @@ public class playerHealth : MonoBehaviour
             print("Player :" + hp);
             if (hp <= 0)
             {
-                Destroy(gameObject);
+                SceneManager.LoadScene("Main");
             }
 
         }

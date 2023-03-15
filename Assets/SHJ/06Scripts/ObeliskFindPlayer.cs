@@ -34,11 +34,11 @@ public class ObeliskFindPlayer : MonoBehaviour
             }
             // 카메라 줌인
             currentTime += Time.deltaTime;
-            if (currentTime < 4)
+            if (currentTime < 3)
             {
                 camera.transform.position -= new Vector3(1, 0, 0) * Time.deltaTime;
             }
-            if(currentTime > 5)
+            if(currentTime > 4)
             {
                 // 적의 등장 기능 켜기: Appear
                 Enemy_Boss.instance.m_State = Enemy_Boss.EnemyState.Appear;

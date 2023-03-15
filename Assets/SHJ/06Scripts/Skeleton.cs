@@ -43,15 +43,17 @@ public class Skeleton : MonoBehaviour
             createTime = Random.Range(minTime, maxTime);
         }
 
-        Destroy(gameObject, 8);
+        Destroy(gameObject, 7);
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            playerHealth.Instance.HP--;
-            Destroy(gameObject);
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        playerHealth.Instance.HP--;
+    //        Destroy(gameObject);
+
+    //    }
+    //}
+
 }

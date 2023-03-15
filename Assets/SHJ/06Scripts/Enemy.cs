@@ -23,7 +23,8 @@ public class Enemy : MonoBehaviour
         Idle,
         Move,
         Attack,
-        Damage
+        Damage,
+        Die
     }
 
     public EnemyState m_State;
@@ -56,9 +57,6 @@ public class Enemy : MonoBehaviour
             case EnemyState.Attack:
                 Attack();
                 break;
-            case EnemyState.Damage:
-                Damage();
-                break;
         }
 
         //print(m_State);
@@ -75,7 +73,8 @@ public class Enemy : MonoBehaviour
         {
             agent.enabled = true;
             m_State = EnemyState.Move;
-            anim.SetTrigger("setMove");
+           // anim.SetTrigger("setMove");
+            anim.CrossFade("Move", 0.1f, 0);
         }
     }
 
@@ -93,14 +92,17 @@ public class Enemy : MonoBehaviour
             agent.enabled = false;
             m_State = EnemyState.Attack;
             currentTime = attackDelaytime;
-            anim.SetTrigger("setAttack");
+            //anim.SetTrigger("setAttack");
+            anim.CrossFade("Attack", 0.1f, 0);
 
         }
         if (distance > moveRange)
         {
             m_State = EnemyState.Idle;
             agent.enabled = false;
-            anim.SetTrigger("setIdle");
+            //anim.SetTrigger("setIdle");
+            anim.CrossFade("Idle", 0.1f, 0);
+
         }
 
     }
@@ -118,7 +120,8 @@ public class Enemy : MonoBehaviour
         {
             isAnim = true;
             currentTime = 0;
-            anim.SetTrigger("setAttack");
+            //anim.SetTrigger("setAttack");
+            anim.CrossFade("Attack", 0.1f, 0);
             StartCoroutine(PlayerTrack());
         }
 
@@ -128,7 +131,8 @@ public class Enemy : MonoBehaviour
         {
             m_State = EnemyState.Move;
             agent.enabled = true;
-            anim.SetTrigger("setMove");
+            //anim.SetTrigger("setMove");
+            anim.CrossFade("Move", 0.1f, 0);
         }
     }
 
@@ -136,18 +140,21 @@ public class Enemy : MonoBehaviour
 
     public void Damage()
     {
+        StopAllCoroutines();
         agent.enabled = false;
         enemyHp--;
         if (enemyHp > 0)
         {
-            print("enemyHp: " + enemyHp);
-            anim.SetTrigger("Damage");
+            m_State = EnemyState.Damage;
+            //anim.SetTrigger("Damage");
+            anim.CrossFade("Mutant Damage", 0.1f, 0);
             StartCoroutine(OnDamage());
         }
-        else if(enemyHp <= 0) 
+        else if (enemyHp <= 0)
         {
-            anim.SetTrigger("Die");
-            print("enemy dying");
+            m_State = EnemyState.Die;
+            //anim.SetTrigger("Die");
+            anim.CrossFade("Undead Die", 0.1f, 0);
             cc.enabled = false;
             agent.enabled = false;
         }
@@ -159,7 +166,6 @@ public class Enemy : MonoBehaviour
     private IEnumerator OnDamage()
     {
         yield return new WaitForSeconds(damageDelayTime);
-        print("enemy OnDamage");
         m_State = EnemyState.Idle;
     }
 

@@ -15,36 +15,19 @@ using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
-    public GameObject[] quests;
-    public GameObject[] boxes;
+    public GameObject quests;
+    public GameObject boxes;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if(gameObject == boxes[0])
-            {
-                quests[0].SetActive(true);
-            } 
-            else if(gameObject == boxes[1])
-            {
-                quests[1].SetActive(true);
-            } 
-            else if(gameObject == boxes[2])
-            {
-                quests[1].SetActive(false);
-                quests[2].SetActive(true);
-            }
-            else if(gameObject == boxes[3])
-            {
-                quests[2].SetActive(false);
-                quests[3].SetActive(true);
-            }
-            else if(gameObject == boxes[4])
-            {
-                quests[3].SetActive(false);
-                quests[4].SetActive(true);
-            }
+            quests.SetActive(true);
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        quests.SetActive(false);
     }
 }
