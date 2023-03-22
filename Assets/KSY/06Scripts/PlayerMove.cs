@@ -45,7 +45,7 @@ public class PlayerMove : MonoBehaviour
         //anim = GetComponentInChildren<Animator>();
         //anim.speed = 2;
         //psBulletEffect = bulletEffect.GetComponent<ParticleSystem>();
-        //transform.position = new Vector3(-114.5f, -117f, 45f);
+        transform.position = new Vector3(-114.5f, -117f, 45f);
     }
 
     void LateUpdate()

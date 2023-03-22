@@ -19,16 +19,7 @@ public class Main : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(player.name == "Erika")
-        {
-            isWizard= true;
-            isWarrior= false;
-        }
-        else if(player.name == "Paladin")
-        {
-            isWarrior= true;
-            isWizard= false;
-        }
+
     }
 
     // Update is called once per frame
@@ -44,14 +35,8 @@ public class Main : MonoBehaviour
 
     public void setPlay()
     {
-        // 마을 맵 씬 연결하기
-        if (isWizard)
-        {
-            SceneManager.LoadScene("Level");
-        } else if (isWarrior)
-        {
-            SceneManager.LoadScene("Level");
-        }
+        SceneManager.LoadScene("Level");
+
         
     }     
     

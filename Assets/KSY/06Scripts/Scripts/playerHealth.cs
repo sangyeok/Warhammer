@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,7 +27,7 @@ public class playerHealth : MonoBehaviour
             print("Player :" + hp);
             if (hp <= 0)
             {
-                SceneManager.LoadScene("Main");
+                Application.Quit();
             }
 
         }

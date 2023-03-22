@@ -12,7 +12,7 @@ public class EnemyAttackEvent : MonoBehaviour
     // 2. Enemy Sprint 상태에서 충돌
     // 3. fire particle에 충돌
 
-    Transform Target;
+    public Transform Target;
 
     private void Start()
     {

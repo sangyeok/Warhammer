@@ -25,7 +25,7 @@ public class attack : MonoBehaviour
             {
                 var enemy = cols[i].GetComponentInChildren<Enemy>();
                 //CamShakeManager.Instance.Play();
-                if (enemy.HP != 0)
+                if (enemy.enemyHp != 0)
                 {
                     enemy.Damage();
                 }
@@ -34,7 +34,7 @@ public class attack : MonoBehaviour
             {
                 var enemy = cols[i].GetComponentInChildren<Enemy_Mid>();
                 //CamShakeManager.Instance.Play();
-                if (enemy.HP != 0)
+                if (enemy.enemyHp != 0)
                 {
                     enemy.Damage();
                 }

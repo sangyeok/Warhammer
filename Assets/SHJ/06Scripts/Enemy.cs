@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 // 최종
 
@@ -36,8 +37,8 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         Target = PlayerMove.Instance.foot.transform;
-        sliderHP.maxValue = HP;
-        HP = HP;
+        sliderHP.maxValue = enemyHp;
+        HP = enemyHp;
         cc = GetComponent<CharacterController>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
@@ -137,7 +138,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public int HP = 2;
+    public int enemyHp = 10;
     int hp;
     int HP
     {
